@@ -28,9 +28,10 @@ class MarketplacePostListCreateView(generics.ListCreateAPIView):
             account__user=self.request.user
         ).select_related('account').order_by('-created_at')
 
-        status = self.request.query_params.get('status', None)
-        if status:
-            queryset = queryset.filter(status=status)
+        # Filter by posted status if provided
+        posted = self.request.query_params.get('posted', None)
+        if posted is not None:
+            queryset = queryset.filter(posted=posted.lower() == 'true')
         return queryset
 
     def create(self, request, *args, **kwargs):
@@ -469,3 +470,98 @@ class StartPostingView(APIView):
                 {'error': f'Error starting posting process: {str(e)}'},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
+
+
+class AnalyticsView(APIView):
+    """Get analytics data with various time period filters"""
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        from .models import PostAnalytics
+        from django.db.models import Count, Q
+        from datetime import timedelta, datetime
+
+        user = request.user
+        period = request.query_params.get(
+            'period', 'lifetime')  # weekly, monthly, lifetime
+        account_email = request.query_params.get('account', None)
+
+        # Calculate date range based on period
+        now = timezone.now()
+        if period == 'weekly':
+            start_date = now - timedelta(days=7)
+        elif period == 'monthly':
+            start_date = now - timedelta(days=30)
+        else:  # lifetime
+            start_date = None
+
+        # Base query
+        analytics_query = PostAnalytics.objects.filter(user=user)
+
+        if start_date:
+            analytics_query = analytics_query.filter(timestamp__gte=start_date)
+
+        if account_email:
+            analytics_query = analytics_query.filter(
+                account_email=account_email)
+
+        # Get counts by action
+        total_created = analytics_query.filter(action='created').count()
+        total_posted = analytics_query.filter(action='posted').count()
+
+        # Current status from MarketplacePost
+        current_posts = MarketplacePost.objects.filter(account__user=user)
+        if account_email:
+            current_posts = current_posts.filter(account__email=account_email)
+
+        currently_posted = current_posts.filter(posted=True).count()
+        currently_pending = current_posts.filter(posted=False).count()
+
+        # Get account-wise breakdown
+        account_stats = analytics_query.values('account_email').annotate(
+            created_count=Count('id', filter=Q(action='created')),
+            posted_count=Count('id', filter=Q(action='posted'))
+        ).order_by('-created_count')
+
+        # Get daily breakdown for charts
+        daily_stats = []
+        if period != 'lifetime':
+            days = 7 if period == 'weekly' else 30
+            for i in range(days):
+                day = now - timedelta(days=i)
+                day_start = day.replace(
+                    hour=0, minute=0, second=0, microsecond=0)
+                day_end = day_start + timedelta(days=1)
+
+                created = analytics_query.filter(
+                    action='created',
+                    timestamp__gte=day_start,
+                    timestamp__lt=day_end
+                ).count()
+
+                posted = analytics_query.filter(
+                    action='posted',
+                    timestamp__gte=day_start,
+                    timestamp__lt=day_end
+                ).count()
+
+                daily_stats.append({
+                    'date': day_start.strftime('%Y-%m-%d'),
+                    'created': created,
+                    'posted': posted
+                })
+
+            daily_stats.reverse()
+
+        return Response({
+            'period': period,
+            'summary': {
+                'total_created': total_created,
+                'total_posted': total_posted,
+                'currently_posted': currently_posted,
+                'currently_pending': currently_pending,
+                'not_posted': total_created - total_posted,
+            },
+            'by_account': list(account_stats),
+            'daily_breakdown': daily_stats,
+        })

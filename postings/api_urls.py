@@ -28,4 +28,7 @@ urlpatterns = [
     # Error logging
     path('posts/error-logs/',
          realtime_views.get_error_logs, name='error_logs'),
+
+    # Analytics
+    path('analytics/', api_views.AnalyticsView.as_view(), name='analytics'),
 ]

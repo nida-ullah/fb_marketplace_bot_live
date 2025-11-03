@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import MarketplacePost, PostingJob, ErrorLog
+from .models import MarketplacePost, PostingJob, ErrorLog, PostAnalytics
 from accounts.models import FacebookAccount
 from accounts.serializers import FacebookAccountSerializer
 
@@ -89,3 +89,14 @@ class ErrorLogSerializer(serializers.ModelSerializer):
             'stack_trace', 'screenshot', 'created_at'
         ]
         read_only_fields = ['created_at']
+
+
+class PostAnalyticsSerializer(serializers.ModelSerializer):
+    """Serializer for post analytics"""
+    class Meta:
+        model = PostAnalytics
+        fields = [
+            'id', 'post_id', 'post_title', 'action', 'timestamp',
+            'account_email', 'price'
+        ]
+        read_only_fields = ['id', 'timestamp']

@@ -1,5 +1,49 @@
 from django.db import models
+from django.conf import settings
 from accounts.models import FacebookAccount
+
+
+class PostAnalytics(models.Model):
+    """
+    Permanent analytics tracking for posts.
+    Records every post creation and posting action.
+    Data is never deleted to maintain lifetime statistics.
+    """
+    ACTION_CHOICES = [
+        ('created', 'Post Created'),
+        ('posted', 'Post Posted to Facebook'),
+    ]
+
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,
+                             on_delete=models.CASCADE)
+    account = models.ForeignKey(
+        FacebookAccount, on_delete=models.SET_NULL, null=True, blank=True)
+    # Reference to MarketplacePost
+    post_id = models.IntegerField(null=True, blank=True)
+    post_title = models.CharField(max_length=255)
+    action = models.CharField(max_length=20, choices=ACTION_CHOICES)
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    # Additional metadata
+    account_email = models.EmailField()  # Store email in case account is deleted
+    price = models.DecimalField(
+        max_digits=10, decimal_places=2, null=True, blank=True)
+
+    class Meta:
+        indexes = [
+            models.Index(fields=['user', 'action', 'timestamp'],
+                         name='user_action_time_idx'),
+            models.Index(fields=['user', 'timestamp'], name='user_time_idx'),
+            models.Index(fields=['account', 'action'],
+                         name='account_action_idx'),
+            models.Index(fields=['action', 'timestamp'],
+                         name='action_time_idx'),
+        ]
+        ordering = ['-timestamp']
+        verbose_name_plural = "Post Analytics"
+
+    def __str__(self):
+        return f"{self.user.username} - {self.action} - {self.post_title}"
 
 
 class MarketplacePost(models.Model):

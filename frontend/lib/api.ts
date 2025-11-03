@@ -125,3 +125,16 @@ export const postsAPI = {
 export const statsAPI = {
   getDashboard: () => api.get("/stats/dashboard/"),
 };
+
+export const analyticsAPI = {
+  getAnalytics: (
+    period: "weekly" | "monthly" | "lifetime" = "lifetime",
+    account?: string
+  ) => {
+    const params: any = { period };
+    if (account) {
+      params.account = account;
+    }
+    return api.get("/analytics/", { params });
+  },
+};

@@ -106,13 +106,21 @@ def dashboard_stats(request):
     # Filter posts and accounts by current user
     user_posts = MarketplacePost.objects.filter(account__user=request.user)
 
-    # Use aggregation for better performance with status field
+    # Use aggregation for better performance with posted field
+    from django.utils import timezone
+    today = timezone.now().date()
+
     stats = user_posts.aggregate(
         total_posts=Count('id'),
-        pending_posts=Count('id', filter=Q(status='pending')),
-        posted_posts=Count('id', filter=Q(status='posted')),
-        failed_posts=Count('id', filter=Q(status='failed'))
+        pending_posts=Count('id', filter=Q(posted=False)),
+        posted_posts=Count('id', filter=Q(posted=True)),
     )
+
+    # Get posts posted today
+    posted_today = user_posts.filter(
+        posted=True,
+        updated_at__date=today
+    ).count()
 
     total_accounts = FacebookAccount.objects.filter(user=request.user).count()
 
@@ -125,7 +133,7 @@ def dashboard_stats(request):
         'total_accounts': total_accounts,
         'total_posts': total_posts,
         'pending_posts': stats['pending_posts'],
-        'posted_today': posted_posts,  # This should ideally filter by date
+        'posted_today': posted_today,
         'success_rate': round(success_rate, 1)
     }
 

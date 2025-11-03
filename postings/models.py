@@ -3,13 +3,6 @@ from accounts.models import FacebookAccount
 
 
 class MarketplacePost(models.Model):
-    STATUS_CHOICES = [
-        ('pending', 'Pending'),
-        ('posting', 'Posting'),
-        ('posted', 'Posted'),
-        ('failed', 'Failed'),
-    ]
-
     account = models.ForeignKey(FacebookAccount, on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
     description = models.TextField()
@@ -17,10 +10,6 @@ class MarketplacePost(models.Model):
     image = models.ImageField(upload_to='posts/', blank=True)
     scheduled_time = models.DateTimeField()
     posted = models.BooleanField(default=False)
-    status = models.CharField(
-        max_length=20, choices=STATUS_CHOICES, default='pending')
-    error_message = models.TextField(blank=True, null=True)
-    retry_count = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -32,7 +21,6 @@ class MarketplacePost(models.Model):
                          name='account_posted_idx'),
             models.Index(fields=['posted', 'scheduled_time'],
                          name='posted_scheduled_idx'),
-            models.Index(fields=['status'], name='status_idx'),
         ]
         ordering = ['-created_at']
 

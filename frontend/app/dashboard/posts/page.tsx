@@ -230,7 +230,7 @@ export default function PostsPage() {
   };
 
   const handleSelectAll = () => {
-    const pendingPosts = posts.filter((p) => p.status === "pending");
+    const pendingPosts = posts.filter((p) => !p.posted);
     if (selectedPosts.length === pendingPosts.length) {
       // Deselect all
       setSelectedPosts([]);
@@ -277,7 +277,7 @@ export default function PostsPage() {
 
   const handleStartPosting = async () => {
     // If no posts are selected, use all pending posts
-    const pendingPosts = posts.filter((p) => p.status === "pending");
+    const pendingPosts = posts.filter((p) => !p.posted);
     const postsToPost =
       selectedPosts.length > 0 ? selectedPosts : pendingPosts.map((p) => p.id);
 
@@ -345,7 +345,7 @@ export default function PostsPage() {
   };
 
   const handleSelectAllPosted = () => {
-    const postedPosts = posts.filter((p) => p.status === "posted");
+    const postedPosts = posts.filter((p) => p.posted);
     if (selectedPostedItems.length === postedPosts.length) {
       // Deselect all
       setSelectedPostedItems([]);
@@ -357,7 +357,7 @@ export default function PostsPage() {
 
   const handleDeleteSelectedPosted = async () => {
     // If no items are selected, use all posted items
-    const postedPosts = posts.filter((p) => p.status === "posted");
+    const postedPosts = posts.filter((p) => p.posted);
     const itemsToDelete =
       selectedPostedItems.length > 0
         ? selectedPostedItems
@@ -404,8 +404,8 @@ export default function PostsPage() {
 
   const stats = {
     total: posts.length,
-    posted: posts.filter((p) => p.status === "posted").length,
-    pending: posts.filter((p) => p.status === "pending").length,
+    posted: posts.filter((p) => p.posted).length,
+    pending: posts.filter((p) => !p.posted).length,
     failed: posts.filter((p) => p.status === "failed").length,
   };
 
@@ -605,14 +605,14 @@ export default function PostsPage() {
           </CardHeader>
           <CardContent className="flex-1 flex flex-col overflow-hidden">
             <div className="space-y-3 flex-1 overflow-y-auto">
-              {posts.filter((p) => p.status === "pending").length === 0 ? (
+              {posts.filter((p) => !p.posted).length === 0 ? (
                 <div className="text-center py-8 text-gray-500">
                   <XCircle className="h-12 w-12 mx-auto mb-2 text-gray-300" />
                   <p>No pending posts</p>
                 </div>
               ) : (
                 posts
-                  .filter((p) => p.status === "pending")
+                  .filter((p) => !p.posted)
                   .map((post) => (
                     <div
                       key={post.id}
@@ -652,8 +652,8 @@ export default function PostsPage() {
                               {post.title}
                             </h4>
                             <StatusBadge
-                              status={post.status}
-                              errorMessage={post.error_message}
+                              posted={post.posted}
+                              
                             />
                           </div>
                           <p className="text-xs text-gray-600 line-clamp-1">
@@ -714,11 +714,11 @@ export default function PostsPage() {
                 onClick={handleSelectAll}
                 className="flex-1"
                 disabled={
-                  posts.filter((p) => p.status === "pending").length === 0
+                  posts.filter((p) => !p.posted).length === 0
                 }
               >
                 {selectedPosts.length ===
-                posts.filter((p) => p.status === "pending").length
+                posts.filter((p) => !p.posted).length
                   ? "Deselect All"
                   : "Select All"}
               </Button>
@@ -737,7 +737,7 @@ export default function PostsPage() {
                 className="bg-green-600 hover:bg-green-700 text-white flex-1"
                 size="sm"
                 disabled={
-                  posts.filter((p) => p.status === "pending").length === 0
+                  posts.filter((p) => !p.posted).length === 0
                 }
               >
                 <CheckCircle className="h-4 w-4 mr-2" />
@@ -760,14 +760,14 @@ export default function PostsPage() {
           </CardHeader>
           <CardContent className="flex-1 flex flex-col overflow-hidden">
             <div className="space-y-3 flex-1 overflow-y-auto">
-              {posts.filter((p) => p.status === "posted").length === 0 ? (
+              {posts.filter((p) => p.posted).length === 0 ? (
                 <div className="text-center py-8 text-gray-500">
                   <CheckCircle className="h-12 w-12 mx-auto mb-2 text-gray-300" />
                   <p>No posted items yet</p>
                 </div>
               ) : (
                 posts
-                  .filter((p) => p.status === "posted")
+                  .filter((p) => p.posted)
                   .map((post) => (
                     <div
                       key={post.id}
@@ -807,8 +807,8 @@ export default function PostsPage() {
                               {post.title}
                             </h4>
                             <StatusBadge
-                              status={post.status}
-                              errorMessage={post.error_message}
+                              posted={post.posted}
+                              
                             />
                           </div>
                           <p className="text-xs text-gray-600 line-clamp-1">
@@ -864,11 +864,11 @@ export default function PostsPage() {
                 onClick={handleSelectAllPosted}
                 className="flex-1"
                 disabled={
-                  posts.filter((p) => p.status === "posted").length === 0
+                  posts.filter((p) => p.posted).length === 0
                 }
               >
                 {selectedPostedItems.length ===
-                posts.filter((p) => p.status === "posted").length
+                posts.filter((p) => p.posted).length
                   ? "Deselect All"
                   : "Select All"}
               </Button>
@@ -878,7 +878,7 @@ export default function PostsPage() {
                 onClick={handleDeleteSelectedPosted}
                 className="flex-1"
                 disabled={
-                  posts.filter((p) => p.status === "posted").length === 0
+                  posts.filter((p) => p.posted).length === 0
                 }
               >
                 <Trash2 className="h-4 w-4 mr-2" />

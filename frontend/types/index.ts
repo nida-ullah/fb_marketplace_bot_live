@@ -22,10 +22,6 @@ export interface MarketplacePost {
   image?: string;
   scheduled_time: string;
   posted: boolean;
-  // NEW: Enhanced status tracking
-  status: "pending" | "posting" | "posted" | "failed";
-  error_message?: string;
-  retry_count: number;
   created_at?: string;
   updated_at?: string;
 }

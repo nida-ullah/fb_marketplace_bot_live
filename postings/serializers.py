@@ -22,7 +22,6 @@ class MarketplacePostSerializer(serializers.ModelSerializer):
         required=False, max_digits=10, decimal_places=2)
     image = serializers.ImageField(required=False)
     scheduled_time = serializers.DateTimeField(required=False)
-    status = serializers.CharField(required=False)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -37,12 +36,10 @@ class MarketplacePostSerializer(serializers.ModelSerializer):
         model = MarketplacePost
         fields = [
             'id', 'title', 'description', 'price', 'image',
-            'scheduled_time', 'posted', 'status', 'error_message',
-            'retry_count', 'account', 'account_id',
+            'scheduled_time', 'posted', 'account', 'account_id',
             'created_at', 'updated_at'
         ]
-        read_only_fields = ['created_at',
-                            'updated_at', 'retry_count', 'posted']
+        read_only_fields = ['created_at', 'updated_at']
 
     def validate_price(self, value):
         """Validate that price is positive"""

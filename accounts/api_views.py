@@ -12,12 +12,43 @@ from postings.models import MarketplacePost
 from automation.post_to_facebook import save_session
 from threading import Thread
 import os
+import re
+
+
+def validate_password_strength(password):
+    """Validate password contains uppercase, lowercase, number, and special character"""
+    if len(password) < 8:
+        return False, "Password must be at least 8 characters long"
+
+    if not re.search(r'[A-Z]', password):
+        return False, "Password must contain at least one uppercase letter"
+
+    if not re.search(r'[a-z]', password):
+        return False, "Password must contain at least one lowercase letter"
+
+    if not re.search(r'[0-9]', password):
+        return False, "Password must contain at least one number"
+
+    if not re.search(r'[!@#$%^&*()_+\-=\[\]{};:\'",.<>?/\\|`~]', password):
+        return False, "Password must contain at least one special character"
+
+    return True, ""
 
 
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def register(request):
     """Register a new user - requires admin approval before login"""
+    # Validate password strength before proceeding
+    password = request.data.get('password', '')
+    is_valid, error_message = validate_password_strength(password)
+
+    if not is_valid:
+        return Response(
+            {'error': error_message},
+            status=status.HTTP_400_BAD_REQUEST
+        )
+
     serializer = RegisterSerializer(data=request.data)
     if serializer.is_valid():
         user = serializer.save()
@@ -83,11 +114,94 @@ def login(request):
     )
 
 
-@api_view(['GET'])
+@api_view(['GET', 'PUT'])
 @permission_classes([IsAuthenticated])
 def get_user(request):
-    """Get current user profile"""
-    return Response(UserSerializer(request.user).data)
+    """Get or update current user profile"""
+    if request.method == 'GET':
+        return Response(UserSerializer(request.user).data)
+
+    elif request.method == 'PUT':
+        # Update user profile
+        user = request.user
+        data = request.data
+
+        # Update fields
+        if 'username' in data:
+            # Check if username is already taken by another user
+            if CustomUser.objects.filter(username=data['username']).exclude(id=user.id).exists():
+                return Response(
+                    {'error': 'Username already taken'},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+            user.username = data['username']
+
+        if 'email' in data:
+            # Check if email is already taken by another user
+            if CustomUser.objects.filter(email=data['email']).exclude(id=user.id).exists():
+                return Response(
+                    {'error': 'Email already taken'},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+            user.email = data['email']
+
+        if 'first_name' in data:
+            user.first_name = data['first_name']
+
+        if 'last_name' in data:
+            user.last_name = data['last_name']
+
+        user.save()
+
+        # Clear dashboard cache when user info changes
+        cache_key = f'dashboard_stats_user_{user.id}'
+        cache.delete(cache_key)
+
+        return Response({
+            'success': True,
+            'message': 'Profile updated successfully',
+            'user': UserSerializer(user).data
+        })
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def change_password(request):
+    """Change user password"""
+    user = request.user
+    old_password = request.data.get('old_password')
+    new_password = request.data.get('new_password')
+
+    # Validation
+    if not old_password or not new_password:
+        return Response(
+            {'error': 'Both old and new passwords are required'},
+            status=status.HTTP_400_BAD_REQUEST
+        )
+
+    # Check if old password is correct
+    if not user.check_password(old_password):
+        return Response(
+            {'error': 'Current password is incorrect'},
+            status=status.HTTP_400_BAD_REQUEST
+        )
+
+    # Validate password strength
+    is_valid, error_message = validate_password_strength(new_password)
+    if not is_valid:
+        return Response(
+            {'error': error_message},
+            status=status.HTTP_400_BAD_REQUEST
+        )
+
+    # Set new password
+    user.set_password(new_password)
+    user.save()
+
+    return Response({
+        'success': True,
+        'message': 'Password changed successfully'
+    })
 
 
 @api_view(['GET'])

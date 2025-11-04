@@ -1175,3 +1175,612 @@ Total: 1 | Successful: 1 | Failed: 0
 Job ID: d9bdd7d3-ec5c-4dc9-8b1f-362be0ecb1b7
 ==================================================
 
+
+
+=== Starting posting process at 2025-11-03 22:58:29.470661+00:00 ===
+Project root: C:\Users\NidaUllah\OneDrive - Higher Education Commission\Documents\Development\fb_marketplace_bot
+manage.py path: C:\Users\NidaUllah\OneDrive - Higher Education Commission\Documents\Development\fb_marketplace_bot\manage.py
+Command: C:\Users\NidaUllah\OneDrive - Higher Education Commission\Documents\Development\fb_marketplace_bot\env\Scripts\python.exe C:\Users\NidaUllah\OneDrive - Higher Education Commission\Documents\Development\fb_marketplace_bot\manage.py post_to_marketplace --post-ids 7
+Post IDs: 7
+
+C:\Users\NidaUllah\OneDrive - Higher Education Commission\Documents\Development\fb_marketplace_bot\env\Lib\site-packages\rest_framework_simplejwt\__init__.py:1: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import DistributionNotFound, get_distribution
+Checking for posts to publish...
+Publishing specific posts: [7]
+Found 1 posts to publish
+
+Processing post: car
+Image path: C:\Users\NidaUllah\OneDrive - Higher Education Commission\Documents\Development\fb_marketplace_bot\media\posts\Exterior_5_xfsQqg5.png
+🌐 Opening Marketplace listing page...
+📸 Uploading image first...
+📝 Filling Title...
+💰 Filling Price...
+📂 Selecting Category...
+✅ Clicked on Category dropdown
+✅ Selected Category: Furniture (via text)
+🔧 Selecting Condition...
+✅ Clicked on Condition dropdown
+✅ Selected Condition: New (via keyboard)
+🧾 Filling Description...
+📦 Setting Availability: In Stock...
+❌ Could not find Availability dropdown
+📍 Skipping location (using proxy/VPN for region)...
+
+🔍 DEBUG: After filling all fields
+   URL: https://www.facebook.com/marketplace/create/item
+   ⚠️ No visible buttons found
+
+🔍 Checking for validation errors...
+📜 Scrolling to bottom of form...
+📤 Looking for Next button...
+✅ Clicked Next button (via text)
+⏳ Waiting for Publish button to appear...
+
+🔍 DEBUG: After Next button (or if no Next button)
+   URL: https://www.facebook.com/marketplace/create/item?step=audience
+   ⚠️ No visible buttons found
+
+🔍 Looking for Publish button...
+✅ Clicked Publish button (found as 'Publish')
+✅ Posted successfully!
+✓ Successfully posted "car" to posttomarketplace2@gmail.com
+
+==================================================
+Posting completed!
+Total: 1 | Successful: 1 | Failed: 0
+Job ID: 41dc8ee3-a964-45aa-86c1-a4f720f62d11
+==================================================
+
+
+
+=== Starting posting process at 2025-11-03 23:09:36.180189+00:00 ===
+Project root: C:\Users\NidaUllah\OneDrive - Higher Education Commission\Documents\Development\fb_marketplace_bot
+manage.py path: C:\Users\NidaUllah\OneDrive - Higher Education Commission\Documents\Development\fb_marketplace_bot\manage.py
+Command: C:\Users\NidaUllah\OneDrive - Higher Education Commission\Documents\Development\fb_marketplace_bot\env\Scripts\python.exe C:\Users\NidaUllah\OneDrive - Higher Education Commission\Documents\Development\fb_marketplace_bot\manage.py post_to_marketplace --post-ids 7
+Post IDs: 7
+
+C:\Users\NidaUllah\OneDrive - Higher Education Commission\Documents\Development\fb_marketplace_bot\env\Lib\site-packages\rest_framework_simplejwt\__init__.py:1: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import DistributionNotFound, get_distribution
+Checking for posts to publish...
+Publishing specific posts: [7]
+Found 1 posts to publish
+
+============================================================
+Starting posting process for 1 account(s)
+============================================================
+
+
+============================================================
+📧 ACCOUNT 1/1: posttomarketplace2@gmail.com
+============================================================
+Posting initiated for account: posttomarketplace2@gmail.com
+Posts to publish: 1
+============================================================
+
+
+Processing post: car
+Image path: C:\Users\NidaUllah\OneDrive - Higher Education Commission\Documents\Development\fb_marketplace_bot\media\posts\Exterior_5_xfsQqg5.png
+🌐 Opening Marketplace listing page...
+📸 Uploading image first...
+📝 Filling Title...
+💰 Filling Price...
+📂 Selecting Category...
+✅ Clicked on Category dropdown
+✅ Selected Category: Furniture (via text)
+🔧 Selecting Condition...
+✅ Clicked on Condition dropdown
+✅ Selected Condition: New (via text)
+🧾 Filling Description...
+📦 Setting Availability: In Stock...
+❌ Could not find Availability dropdown
+📍 Skipping location (using proxy/VPN for region)...
+
+🔍 DEBUG: After filling all fields
+   URL: https://www.facebook.com/marketplace/create/item
+   ⚠️ No visible buttons found
+
+🔍 Checking for validation errors...
+📜 Scrolling to bottom of form...
+📤 Looking for Next button...
+✅ Clicked Next button (via text)
+⏳ Waiting for Publish button to appear...
+
+🔍 DEBUG: After Next button (or if no Next button)
+   URL: https://www.facebook.com/marketplace/create/item?step=audience
+   ⚠️ No visible buttons found
+
+🔍 Looking for Publish button...
+✅ Clicked Publish button (found as 'Publish')
+✅ Posted successfully!
+✓ Successfully posted "car" to posttomarketplace2@gmail.com
+
+============================================================
+✅ Posting completed for account: posttomarketplace2@gmail.com
+Account Summary: 1 successful, 0 failed
+============================================================
+
+
+============================================================
+🎉 ALL POSTING COMPLETED!
+============================================================
+Total Accounts Processed: 1
+Total Posts: 1
+✅ Successful: 1
+❌ Failed: 0
+Job ID: 7527a519-d18a-461c-b7a2-e52406344044
+============================================================
+
+
+
+=== Starting posting process at 2025-11-03 23:15:12.606881+00:00 ===
+Project root: C:\Users\NidaUllah\OneDrive - Higher Education Commission\Documents\Development\fb_marketplace_bot
+manage.py path: C:\Users\NidaUllah\OneDrive - Higher Education Commission\Documents\Development\fb_marketplace_bot\manage.py
+Command: C:\Users\NidaUllah\OneDrive - Higher Education Commission\Documents\Development\fb_marketplace_bot\env\Scripts\python.exe C:\Users\NidaUllah\OneDrive - Higher Education Commission\Documents\Development\fb_marketplace_bot\manage.py post_to_marketplace --post-ids 7
+Post IDs: 7
+
+C:\Users\NidaUllah\OneDrive - Higher Education Commission\Documents\Development\fb_marketplace_bot\env\Lib\site-packages\rest_framework_simplejwt\__init__.py:1: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import DistributionNotFound, get_distribution
+Checking for posts to publish...
+Publishing specific posts: [7]
+Found 1 posts to publish
+
+============================================================
+Starting posting process for 1 account(s)
+============================================================
+
+
+============================================================
+📧 ACCOUNT 1/1: posttomarketplace2@gmail.com
+============================================================
+Posting initiated for account: posttomarketplace2@gmail.com
+Posts to publish: 1
+============================================================
+
+
+Processing post: car
+Image path: C:\Users\NidaUllah\OneDrive - Higher Education Commission\Documents\Development\fb_marketplace_bot\media\posts\Exterior_5_xfsQqg5.png
+🌐 Opening Marketplace listing page...
+📸 Uploading image first...
+📝 Filling Title...
+💰 Filling Price...
+📂 Selecting Category...
+✅ Clicked on Category dropdown
+✅ Selected Category: Furniture (via text)
+🔧 Selecting Condition...
+✅ Clicked on Condition dropdown
+✅ Selected Condition: New (via text)
+🧾 Filling Description...
+📦 Setting Availability: In Stock...
+❌ Could not find Availability dropdown
+📍 Skipping location (using proxy/VPN for region)...
+
+🔍 DEBUG: After filling all fields
+   URL: https://www.facebook.com/marketplace/create/item
+   ⚠️ No visible buttons found
+
+🔍 Checking for validation errors...
+📜 Scrolling to bottom of form...
+📤 Looking for Next button...
+✅ Clicked Next button (via text)
+⏳ Waiting for Publish button to appear...
+
+🔍 DEBUG: After Next button (or if no Next button)
+   URL: https://www.facebook.com/marketplace/create/item?step=audience
+   ⚠️ No visible buttons found
+
+🔍 Looking for Publish button...
+✅ Clicked Publish button (found as 'Publish')
+✅ Posted successfully!
+✓ Successfully posted "car" to posttomarketplace2@gmail.com
+
+============================================================
+✅ Posting completed for account: posttomarketplace2@gmail.com
+Account Summary: 1 successful, 0 failed
+============================================================
+
+
+============================================================
+🎉 ALL POSTING COMPLETED!
+============================================================
+Total Accounts Processed: 1
+Total Posts: 1
+✅ Successful: 1
+❌ Failed: 0
+Job ID: b6d17136-ac9b-4708-9e3a-c7d4b2642991
+============================================================
+
+
+
+=== Starting posting process at 2025-11-03 23:20:49.061604+00:00 ===
+Project root: C:\Users\NidaUllah\OneDrive - Higher Education Commission\Documents\Development\fb_marketplace_bot
+manage.py path: C:\Users\NidaUllah\OneDrive - Higher Education Commission\Documents\Development\fb_marketplace_bot\manage.py
+Command: C:\Users\NidaUllah\OneDrive - Higher Education Commission\Documents\Development\fb_marketplace_bot\env\Scripts\python.exe C:\Users\NidaUllah\OneDrive - Higher Education Commission\Documents\Development\fb_marketplace_bot\manage.py post_to_marketplace --post-ids 7
+Post IDs: 7
+
+C:\Users\NidaUllah\OneDrive - Higher Education Commission\Documents\Development\fb_marketplace_bot\env\Lib\site-packages\rest_framework_simplejwt\__init__.py:1: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import DistributionNotFound, get_distribution
+Checking for posts to publish...
+Publishing specific posts: [7]
+Found 1 posts to publish
+
+============================================================
+Starting posting process for 1 account(s)
+============================================================
+
+
+============================================================
+📧 ACCOUNT 1/1: posttomarketplace2@gmail.com
+============================================================
+Posting initiated for account: posttomarketplace2@gmail.com
+Posts to publish: 1
+============================================================
+
+
+Processing post: car
+Image path: C:\Users\NidaUllah\OneDrive - Higher Education Commission\Documents\Development\fb_marketplace_bot\media\posts\Exterior_5_xfsQqg5.png
+🌐 Opening Marketplace listing page...
+📸 Uploading image first...
+📝 Filling Title...
+💰 Filling Price...
+📂 Selecting Category...
+✅ Clicked on Category dropdown
+✅ Selected Category: Furniture (via text)
+🔧 Selecting Condition...
+✅ Clicked on Condition dropdown
+✅ Selected Condition: New (via text)
+🧾 Filling Description...
+📦 Setting Availability: In Stock...
+❌ Could not find Availability dropdown
+📍 Skipping location (using proxy/VPN for region)...
+
+🔍 DEBUG: After filling all fields
+   URL: https://www.facebook.com/marketplace/create/item
+   ⚠️ No visible buttons found
+
+🔍 Checking for validation errors...
+📜 Scrolling to bottom of form...
+📤 Looking for Next button...
+✅ Clicked Next button (via text)
+⏳ Waiting for Publish button to appear...
+
+🔍 DEBUG: After Next button (or if no Next button)
+   URL: https://www.facebook.com/marketplace/create/item?step=audience
+   ⚠️ No visible buttons found
+
+🔍 Looking for Publish button...
+✅ Clicked Publish button (found as 'Publish')
+✅ Posted successfully!
+✓ Successfully posted "car" to posttomarketplace2@gmail.com
+
+============================================================
+✅ Posting completed for account: posttomarketplace2@gmail.com
+Account Summary: 1 successful, 0 failed
+============================================================
+
+
+============================================================
+🎉 ALL POSTING COMPLETED!
+============================================================
+Total Accounts Processed: 1
+Total Posts: 1
+✅ Successful: 1
+❌ Failed: 0
+Job ID: 7ae6ad69-b1d4-49b6-83a8-97693e6e1cf1
+============================================================
+
+
+
+=== Starting posting process at 2025-11-03 23:33:25.011105+00:00 ===
+Project root: C:\Users\NidaUllah\OneDrive - Higher Education Commission\Documents\Development\fb_marketplace_bot
+manage.py path: C:\Users\NidaUllah\OneDrive - Higher Education Commission\Documents\Development\fb_marketplace_bot\manage.py
+Command: C:\Users\NidaUllah\OneDrive - Higher Education Commission\Documents\Development\fb_marketplace_bot\env\Scripts\python.exe C:\Users\NidaUllah\OneDrive - Higher Education Commission\Documents\Development\fb_marketplace_bot\manage.py post_to_marketplace --post-ids 7
+Post IDs: 7
+
+C:\Users\NidaUllah\OneDrive - Higher Education Commission\Documents\Development\fb_marketplace_bot\env\Lib\site-packages\rest_framework_simplejwt\__init__.py:1: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import DistributionNotFound, get_distribution
+Checking for posts to publish...
+Publishing specific posts: [7]
+Found 1 posts to publish
+
+============================================================
+Starting posting process for 1 account(s)
+============================================================
+
+
+============================================================
+📧 ACCOUNT 1/1: posttomarketplace2@gmail.com
+============================================================
+Posting initiated for account: posttomarketplace2@gmail.com
+Posts to publish: 1
+============================================================
+
+
+Processing post: car
+Image path: C:\Users\NidaUllah\OneDrive - Higher Education Commission\Documents\Development\fb_marketplace_bot\media\posts\Exterior_5_xfsQqg5.png
+🌐 Opening Marketplace listing page...
+📸 Uploading image first...
+📝 Filling Title...
+💰 Filling Price...
+📂 Selecting Category...
+✅ Clicked on Category dropdown
+✅ Selected Category: Furniture (via text)
+🔧 Selecting Condition...
+✅ Clicked on Condition dropdown
+✅ Selected Condition: New (via keyboard)
+🧾 Filling Description...
+📦 Setting Availability: In Stock...
+❌ Could not find Availability dropdown
+📍 Skipping location (using proxy/VPN for region)...
+
+🔍 DEBUG: After filling all fields
+   URL: https://www.facebook.com/marketplace/create/item
+   ⚠️ No visible buttons found
+
+🔍 Checking for validation errors...
+📜 Scrolling to bottom of form...
+📤 Looking for Next button...
+✅ Clicked Next button (via text)
+⏳ Waiting for Publish button to appear...
+
+🔍 DEBUG: After Next button (or if no Next button)
+   URL: https://www.facebook.com/marketplace/create/item?step=audience
+   ⚠️ No visible buttons found
+
+🔍 Looking for Publish button...
+✅ Clicked Publish button (found as 'Publish')
+✅ Posted successfully!
+✓ Successfully posted "car" to posttomarketplace2@gmail.com
+
+============================================================
+✅ Posting completed for account: posttomarketplace2@gmail.com
+Account Summary: 1 successful, 0 failed
+============================================================
+
+
+============================================================
+🎉 ALL POSTING COMPLETED!
+============================================================
+Total Accounts Processed: 1
+Total Posts: 1
+✅ Successful: 1
+❌ Failed: 0
+Job ID: 2470a539-2079-442d-909c-883dbc624505
+============================================================
+
+
+
+=== Starting posting process at 2025-11-03 23:39:59.008367+00:00 ===
+Project root: C:\Users\NidaUllah\OneDrive - Higher Education Commission\Documents\Development\fb_marketplace_bot
+manage.py path: C:\Users\NidaUllah\OneDrive - Higher Education Commission\Documents\Development\fb_marketplace_bot\manage.py
+Command: C:\Users\NidaUllah\OneDrive - Higher Education Commission\Documents\Development\fb_marketplace_bot\env\Scripts\python.exe C:\Users\NidaUllah\OneDrive - Higher Education Commission\Documents\Development\fb_marketplace_bot\manage.py post_to_marketplace --post-ids 7
+Post IDs: 7
+
+C:\Users\NidaUllah\OneDrive - Higher Education Commission\Documents\Development\fb_marketplace_bot\env\Lib\site-packages\rest_framework_simplejwt\__init__.py:1: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import DistributionNotFound, get_distribution
+Checking for posts to publish...
+Publishing specific posts: [7]
+Found 1 posts to publish
+
+============================================================
+Starting posting process for 1 account(s)
+============================================================
+
+
+============================================================
+📧 ACCOUNT 1/1: posttomarketplace2@gmail.com
+============================================================
+Posting initiated for account: posttomarketplace2@gmail.com
+Posts to publish: 1
+============================================================
+
+
+Processing post: car
+Image path: C:\Users\NidaUllah\OneDrive - Higher Education Commission\Documents\Development\fb_marketplace_bot\media\posts\Exterior_5_xfsQqg5.png
+🌐 Opening Marketplace listing page...
+📸 Uploading image first...
+📝 Filling Title...
+💰 Filling Price...
+📂 Selecting Category...
+✅ Clicked on Category dropdown
+✅ Selected Category: Furniture (via text)
+🔧 Selecting Condition...
+✅ Clicked on Condition dropdown
+✅ Selected Condition: New (via text)
+🧾 Filling Description...
+📦 Setting Availability: In Stock...
+❌ Could not find Availability dropdown
+📍 Skipping location (using proxy/VPN for region)...
+
+🔍 DEBUG: After filling all fields
+   URL: https://www.facebook.com/marketplace/create/item
+   ⚠️ No visible buttons found
+
+🔍 Checking for validation errors...
+📜 Scrolling to bottom of form...
+📤 Looking for Next button...
+✅ Clicked Next button (via text)
+⏳ Waiting for Publish button to appear...
+
+🔍 DEBUG: After Next button (or if no Next button)
+   URL: https://www.facebook.com/marketplace/create/item?step=audience
+   ⚠️ No visible buttons found
+
+🔍 Looking for Publish button...
+✅ Clicked Publish button (found as 'Publish')
+✅ Posted successfully!
+✓ Successfully posted "car" to posttomarketplace2@gmail.com
+
+============================================================
+✅ Posting completed for account: posttomarketplace2@gmail.com
+Account Summary: 1 successful, 0 failed
+============================================================
+
+
+============================================================
+🎉 ALL POSTING COMPLETED!
+============================================================
+Total Accounts Processed: 1
+Total Posts: 1
+✅ Successful: 1
+❌ Failed: 0
+Job ID: d35406e8-2188-4103-af95-c1a8bd2deaa6
+============================================================
+
+
+
+=== Starting posting process at 2025-11-03 23:43:17.324091+00:00 ===
+Project root: C:\Users\NidaUllah\OneDrive - Higher Education Commission\Documents\Development\fb_marketplace_bot
+manage.py path: C:\Users\NidaUllah\OneDrive - Higher Education Commission\Documents\Development\fb_marketplace_bot\manage.py
+Command: C:\Users\NidaUllah\OneDrive - Higher Education Commission\Documents\Development\fb_marketplace_bot\env\Scripts\python.exe C:\Users\NidaUllah\OneDrive - Higher Education Commission\Documents\Development\fb_marketplace_bot\manage.py post_to_marketplace --post-ids 8
+Post IDs: 8
+
+C:\Users\NidaUllah\OneDrive - Higher Education Commission\Documents\Development\fb_marketplace_bot\env\Lib\site-packages\rest_framework_simplejwt\__init__.py:1: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import DistributionNotFound, get_distribution
+Checking for posts to publish...
+Publishing specific posts: [8]
+Found 1 posts to publish
+
+============================================================
+Starting posting process for 1 account(s)
+============================================================
+
+
+============================================================
+📧 ACCOUNT 1/1: posttomarketplace2@gmail.com
+============================================================
+Posting initiated for account: posttomarketplace2@gmail.com
+Posts to publish: 1
+============================================================
+
+
+Processing post: iPhone 13 Pro
+Image path: C:\Users\NidaUllah\OneDrive - Higher Education Commission\Documents\Development\fb_marketplace_bot\media\posts\profileImage4_dU4az9i.png
+🌐 Opening Marketplace listing page...
+📸 Uploading image first...
+📝 Filling Title...
+💰 Filling Price...
+📂 Selecting Category...
+✅ Clicked on Category dropdown
+✅ Selected Category: Furniture (via text)
+🔧 Selecting Condition...
+✅ Clicked on Condition dropdown
+✅ Selected Condition: New (via text)
+🧾 Filling Description...
+📦 Setting Availability: In Stock...
+❌ Could not find Availability dropdown
+📍 Skipping location (using proxy/VPN for region)...
+
+🔍 DEBUG: After filling all fields
+   URL: https://www.facebook.com/marketplace/create/item
+   ⚠️ No visible buttons found
+
+🔍 Checking for validation errors...
+📜 Scrolling to bottom of form...
+📤 Looking for Next button...
+✅ Clicked Next button (via text)
+⏳ Waiting for Publish button to appear...
+
+🔍 DEBUG: After Next button (or if no Next button)
+   URL: https://www.facebook.com/marketplace/create/item?step=audience
+   ⚠️ No visible buttons found
+
+🔍 Looking for Publish button...
+✅ Clicked Publish button (found as 'Publish')
+✅ Posted successfully!
+✓ Successfully posted "iPhone 13 Pro" to posttomarketplace2@gmail.com
+
+============================================================
+✅ Posting completed for account: posttomarketplace2@gmail.com
+Account Summary: 1 successful, 0 failed
+============================================================
+
+
+============================================================
+🎉 ALL POSTING COMPLETED!
+============================================================
+Total Accounts Processed: 1
+Total Posts: 1
+✅ Successful: 1
+❌ Failed: 0
+Job ID: 5b5d897d-a303-4218-a705-65103a61bd5f
+============================================================
+
+
+
+=== Starting posting process at 2025-11-03 23:49:32.020102+00:00 ===
+Project root: C:\Users\NidaUllah\OneDrive - Higher Education Commission\Documents\Development\fb_marketplace_bot
+manage.py path: C:\Users\NidaUllah\OneDrive - Higher Education Commission\Documents\Development\fb_marketplace_bot\manage.py
+Command: C:\Users\NidaUllah\OneDrive - Higher Education Commission\Documents\Development\fb_marketplace_bot\env\Scripts\python.exe C:\Users\NidaUllah\OneDrive - Higher Education Commission\Documents\Development\fb_marketplace_bot\manage.py post_to_marketplace --post-ids 8
+Post IDs: 8
+
+C:\Users\NidaUllah\OneDrive - Higher Education Commission\Documents\Development\fb_marketplace_bot\env\Lib\site-packages\rest_framework_simplejwt\__init__.py:1: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import DistributionNotFound, get_distribution
+Checking for posts to publish...
+Publishing specific posts: [8]
+Found 1 posts to publish
+
+============================================================
+Starting posting process for 1 account(s)
+============================================================
+
+
+============================================================
+📧 ACCOUNT 1/1: posttomarketplace2@gmail.com
+============================================================
+Posting initiated for account: posttomarketplace2@gmail.com
+Posts to publish: 1
+============================================================
+
+
+Processing post: iPhone 13 Pro
+Image path: C:\Users\NidaUllah\OneDrive - Higher Education Commission\Documents\Development\fb_marketplace_bot\media\posts\profileImage4_dU4az9i.png
+🌐 Opening Marketplace listing page...
+📸 Uploading image first...
+📝 Filling Title...
+💰 Filling Price...
+📂 Selecting Category...
+✅ Clicked on Category dropdown
+✅ Selected Category: Furniture (via text)
+🔧 Selecting Condition...
+✅ Clicked on Condition dropdown
+✅ Selected Condition: New (via text)
+🧾 Filling Description...
+📦 Setting Availability: In Stock...
+❌ Could not find Availability dropdown
+📍 Skipping location (using proxy/VPN for region)...
+
+🔍 DEBUG: After filling all fields
+   URL: https://www.facebook.com/marketplace/create/item
+   ⚠️ No visible buttons found
+
+🔍 Checking for validation errors...
+📜 Scrolling to bottom of form...
+📤 Looking for Next button...
+✅ Clicked Next button (via text)
+⏳ Waiting for Publish button to appear...
+
+🔍 DEBUG: After Next button (or if no Next button)
+   URL: https://www.facebook.com/marketplace/create/item?step=audience
+   ⚠️ No visible buttons found
+
+🔍 Looking for Publish button...
+✅ Clicked Publish button (found as 'Publish')
+✅ Posted successfully!
+✓ Successfully posted "iPhone 13 Pro" to posttomarketplace2@gmail.com
+
+============================================================
+✅ Posting completed for account: posttomarketplace2@gmail.com
+Account Summary: 1 successful, 0 failed
+============================================================
+
+
+============================================================
+🎉 ALL POSTING COMPLETED!
+============================================================
+Total Accounts Processed: 1
+Total Posts: 1
+✅ Successful: 1
+❌ Failed: 0
+Job ID: e25bbcee-7acb-41bd-9c3a-e1c6457ceef9
+============================================================
+

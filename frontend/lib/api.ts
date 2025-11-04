@@ -66,6 +66,19 @@ export const authAPI = {
   logout: () => api.post("/auth/logout/"),
 
   getProfile: () => api.get("/auth/user/"),
+
+  updateProfile: (data: {
+    username: string;
+    email: string;
+    first_name: string;
+    last_name: string;
+  }) => api.put("/auth/user/", data),
+
+  changePassword: (oldPassword: string, newPassword: string) =>
+    api.post("/auth/change-password/", {
+      old_password: oldPassword,
+      new_password: newPassword,
+    }),
 };
 
 export const accountsAPI = {

@@ -16,11 +16,40 @@ import {
   CardTitle,
 } from "@/components/ui/Card";
 
+// Strong password validation function
+const validatePassword = (password: string) => {
+  const hasUpperCase = /[A-Z]/.test(password);
+  const hasLowerCase = /[a-z]/.test(password);
+  const hasNumber = /[0-9]/.test(password);
+  const hasSpecialChar = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password);
+  const isLongEnough = password.length >= 8;
+
+  return {
+    hasUpperCase,
+    hasLowerCase,
+    hasNumber,
+    hasSpecialChar,
+    isLongEnough,
+    isValid:
+      hasUpperCase &&
+      hasLowerCase &&
+      hasNumber &&
+      hasSpecialChar &&
+      isLongEnough,
+  };
+};
+
 const signupSchema = z
   .object({
     name: z.string().min(2, "Name must be at least 2 characters"),
     email: z.string().email("Invalid email address"),
-    password: z.string().min(6, "Password must be at least 6 characters"),
+    password: z
+      .string()
+      .min(8, "Password must be at least 8 characters")
+      .refine((password) => validatePassword(password).isValid, {
+        message:
+          "Password must contain uppercase, lowercase, number, and special character",
+      }),
     confirmPassword: z.string(),
   })
   .refine((data) => data.password === data.confirmPassword, {
@@ -34,6 +63,8 @@ export default function SignupPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [passwordValue, setPasswordValue] = useState("");
+  const [confirmPasswordValue, setConfirmPasswordValue] = useState("");
   const { signup } = useAuth();
 
   const {
@@ -139,23 +170,130 @@ export default function SignupPage() {
               {...register("email")}
             />
 
-            <Input
-              label="Password"
-              type="password"
-              placeholder="Create a password"
-              error={errors.password?.message}
-              disabled={!!success}
-              {...register("password")}
-            />
+            <div>
+              <label className="block text-sm font-semibold text-gray-900 mb-2">
+                Password
+              </label>
+              <input
+                type="password"
+                placeholder="Create a password"
+                disabled={!!success}
+                {...register("password")}
+                onChange={(e) => {
+                  setPasswordValue(e.target.value);
+                  register("password").onChange(e);
+                }}
+                className={`w-full px-3 py-2 text-sm text-gray-900 border rounded-lg placeholder:text-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                  passwordValue && !validatePassword(passwordValue).isValid
+                    ? "border-red-500"
+                    : "border-gray-400"
+                }`}
+              />
+              {errors.password && (
+                <p className="mt-1 text-sm text-red-600">
+                  {errors.password.message}
+                </p>
+              )}
+              {passwordValue &&
+                (() => {
+                  const validation = validatePassword(passwordValue);
+                  if (!validation.isValid) {
+                    return (
+                      <div className="mt-2 text-sm bg-red-50 border border-red-200 rounded-lg px-3 py-2 space-y-1">
+                        <p className="font-semibold text-red-700 mb-2">
+                          ⚠️ Password must contain:
+                        </p>
+                        <div className="space-y-1">
+                          <p
+                            className={
+                              validation.isLongEnough
+                                ? "text-green-600"
+                                : "text-red-600"
+                            }
+                          >
+                            {validation.isLongEnough ? "✓" : "✗"} At least 8
+                            characters
+                          </p>
+                          <p
+                            className={
+                              validation.hasUpperCase
+                                ? "text-green-600"
+                                : "text-red-600"
+                            }
+                          >
+                            {validation.hasUpperCase ? "✓" : "✗"} One uppercase
+                            letter (A-Z)
+                          </p>
+                          <p
+                            className={
+                              validation.hasLowerCase
+                                ? "text-green-600"
+                                : "text-red-600"
+                            }
+                          >
+                            {validation.hasLowerCase ? "✓" : "✗"} One lowercase
+                            letter (a-z)
+                          </p>
+                          <p
+                            className={
+                              validation.hasNumber
+                                ? "text-green-600"
+                                : "text-red-600"
+                            }
+                          >
+                            {validation.hasNumber ? "✓" : "✗"} One number (0-9)
+                          </p>
+                          <p
+                            className={
+                              validation.hasSpecialChar
+                                ? "text-green-600"
+                                : "text-red-600"
+                            }
+                          >
+                            {validation.hasSpecialChar ? "✓" : "✗"} One special
+                            character (!@#$%^&*...)
+                          </p>
+                        </div>
+                      </div>
+                    );
+                  }
+                })()}
+            </div>
 
-            <Input
-              label="Confirm Password"
-              type="password"
-              placeholder="Confirm your password"
-              error={errors.confirmPassword?.message}
-              disabled={!!success}
-              {...register("confirmPassword")}
-            />
+            <div>
+              <label className="block text-sm font-semibold text-gray-900 mb-2">
+                Confirm Password
+              </label>
+              <input
+                type="password"
+                placeholder="Confirm your password"
+                disabled={!!success}
+                {...register("confirmPassword")}
+                onChange={(e) => {
+                  setConfirmPasswordValue(e.target.value);
+                  register("confirmPassword").onChange(e);
+                }}
+                className={`w-full px-3 py-2 text-sm text-gray-900 border rounded-lg placeholder:text-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                  confirmPasswordValue &&
+                  passwordValue &&
+                  confirmPasswordValue !== passwordValue
+                    ? "border-red-500"
+                    : "border-gray-400"
+                }`}
+              />
+              {errors.confirmPassword && (
+                <p className="mt-1 text-sm text-red-600">
+                  {errors.confirmPassword.message}
+                </p>
+              )}
+              {confirmPasswordValue &&
+                passwordValue &&
+                confirmPasswordValue !== passwordValue && (
+                  <p className="mt-2 text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg px-3 py-2">
+                    ⚠️ Passwords do not match
+                  </p>
+                )}
+            </div>
 
             <Button
               type="submit"

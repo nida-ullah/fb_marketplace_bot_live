@@ -9,6 +9,7 @@ urlpatterns = [
     path('auth/register/', api_views.register, name='register'),
     path('auth/login/', api_views.login, name='login'),
     path('auth/user/', api_views.get_user, name='get_user'),
+    path('auth/change-password/', api_views.change_password, name='change_password'),
 
     # Dashboard stats
     path('stats/dashboard/', api_views.dashboard_stats, name='dashboard_stats'),

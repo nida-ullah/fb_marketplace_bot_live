@@ -15,7 +15,7 @@ class MarketplacePostSerializer(serializers.ModelSerializer):
         required=False
     )
 
-    # Make all fields optional for updates (partial updates)
+    # Make some fields optional for updates (partial updates)
     title = serializers.CharField(required=False, max_length=255)
     description = serializers.CharField(required=False)
     price = serializers.DecimalField(
@@ -31,6 +31,32 @@ class MarketplacePostSerializer(serializers.ModelSerializer):
             self.fields['account_id'].queryset = FacebookAccount.objects.filter(
                 user=request.user
             )
+
+    def validate(self, data):
+        """Validate that required fields are present for creation"""
+        # For creation (no instance), require certain fields
+        if not self.instance:
+            if 'account' not in data:
+                raise serializers.ValidationError({
+                    'account_id': 'This field is required when creating a post.'
+                })
+            if 'title' not in data or not data['title']:
+                raise serializers.ValidationError({
+                    'title': 'This field is required when creating a post.'
+                })
+            if 'description' not in data or not data['description']:
+                raise serializers.ValidationError({
+                    'description': 'This field is required when creating a post.'
+                })
+            if 'price' not in data:
+                raise serializers.ValidationError({
+                    'price': 'This field is required when creating a post.'
+                })
+            if 'scheduled_time' not in data:
+                raise serializers.ValidationError({
+                    'scheduled_time': 'This field is required when creating a post.'
+                })
+        return data
 
     class Meta:
         model = MarketplacePost

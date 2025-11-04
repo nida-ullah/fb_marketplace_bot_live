@@ -148,7 +148,7 @@ export default function CreatePostModal({
         submitData.append("title", formData.title);
         submitData.append("description", formData.description);
         submitData.append("price", formData.price);
-        submitData.append("account", accountId.toString());
+        submitData.append("account_id", accountId.toString());
         submitData.append("scheduled_time", now);
         submitData.append("image", image);
         return postsAPI.create(submitData);

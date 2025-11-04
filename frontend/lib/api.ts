@@ -79,6 +79,13 @@ export const authAPI = {
       old_password: oldPassword,
       new_password: newPassword,
     }),
+
+  getAllUsers: () => api.get("/auth/users/"),
+
+  approveUser: (userId: number) => api.post(`/auth/users/${userId}/approve/`),
+
+  disapproveUser: (userId: number) =>
+    api.post(`/auth/users/${userId}/disapprove/`),
 };
 
 export const accountsAPI = {

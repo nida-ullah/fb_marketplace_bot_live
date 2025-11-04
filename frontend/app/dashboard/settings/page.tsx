@@ -4,11 +4,31 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
-import { User, Lock, Save, Shield, LogOut } from "lucide-react";
+import {
+  User,
+  Lock,
+  Save,
+  Shield,
+  LogOut,
+  UserCog,
+  Check,
+  X,
+} from "lucide-react";
 import { authAPI } from "@/lib/api";
 import { useToast, ToastContainer } from "@/components/ui/Toast";
 
-type SettingsTab = "profile" | "security";
+type SettingsTab = "profile" | "security" | "admin";
+
+interface UserData {
+  id: number;
+  username: string;
+  email: string;
+  first_name: string;
+  last_name: string;
+  is_approved: boolean;
+  is_staff: boolean;
+  is_superuser: boolean;
+}
 
 export default function SettingsPage() {
   const router = useRouter();
@@ -27,6 +47,9 @@ export default function SettingsPage() {
   const [loading, setLoading] = useState(false);
   const [profileLoading, setProfileLoading] = useState(true);
   const [currentPasswordError, setCurrentPasswordError] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [users, setUsers] = useState<UserData[]>([]);
+  const [usersLoading, setUsersLoading] = useState(false);
   const { toasts, removeToast, success, error: showError } = useToast();
 
   const handleLogout = () => {
@@ -74,6 +97,9 @@ export default function SettingsPage() {
         first_name: response.data.first_name || "",
         last_name: response.data.last_name || "",
       });
+
+      // Check if user is admin
+      setIsAdmin(response.data.is_staff || response.data.is_superuser || false);
     } catch (err) {
       showError("Failed to load profile");
       console.error(err);
@@ -81,6 +107,47 @@ export default function SettingsPage() {
       setProfileLoading(false);
     }
   };
+
+  const fetchUsers = async () => {
+    setUsersLoading(true);
+    try {
+      const response = await authAPI.getAllUsers();
+      setUsers(response.data.users || []);
+    } catch (err) {
+      showError("Failed to load users");
+      console.error(err);
+    } finally {
+      setUsersLoading(false);
+    }
+  };
+
+  const handleApproveUser = async (userId: number) => {
+    try {
+      await authAPI.approveUser(userId);
+      success("User approved successfully");
+      fetchUsers(); // Refresh the list
+    } catch (err) {
+      showError("Failed to approve user");
+      console.error(err);
+    }
+  };
+
+  const handleDisapproveUser = async (userId: number) => {
+    try {
+      await authAPI.disapproveUser(userId);
+      success("User disapproved successfully");
+      fetchUsers(); // Refresh the list
+    } catch (err) {
+      showError("Failed to disapprove user");
+      console.error(err);
+    }
+  };
+
+  useEffect(() => {
+    if (activeTab === "admin" && isAdmin) {
+      fetchUsers();
+    }
+  }, [activeTab, isAdmin]);
 
   const handleProfileSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -222,6 +289,19 @@ export default function SettingsPage() {
                   <Shield className="h-5 w-5" />
                   <span>Security</span>
                 </button>
+                {isAdmin && (
+                  <button
+                    onClick={() => setActiveTab("admin")}
+                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-colors ${
+                      activeTab === "admin"
+                        ? "bg-blue-50 text-blue-700 font-semibold"
+                        : "text-gray-700 hover:bg-gray-50"
+                    }`}
+                  >
+                    <UserCog className="h-5 w-5" />
+                    <span>Admin Panel</span>
+                  </button>
+                )}
               </nav>
             </CardContent>
 
@@ -541,6 +621,115 @@ export default function SettingsPage() {
                     </Button>
                   </div>
                 </form>
+              </CardContent>
+            </Card>
+          )}
+
+          {activeTab === "admin" && isAdmin && (
+            <Card className="h-full">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <UserCog className="h-5 w-5" />
+                  User Management
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                {usersLoading ? (
+                  <div className="flex items-center justify-center py-12">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+                  </div>
+                ) : (
+                  <div className="space-y-4">
+                    {users.length === 0 ? (
+                      <p className="text-center text-gray-500 py-8">
+                        No users found
+                      </p>
+                    ) : (
+                      <div className="overflow-x-auto">
+                        <table className="w-full">
+                          <thead>
+                            <tr className="border-b border-gray-200">
+                              <th className="text-left py-3 px-4 text-sm font-semibold text-gray-900">
+                                Username
+                              </th>
+                              <th className="text-left py-3 px-4 text-sm font-semibold text-gray-900">
+                                Email
+                              </th>
+                              <th className="text-left py-3 px-4 text-sm font-semibold text-gray-900">
+                                Name
+                              </th>
+                              <th className="text-left py-3 px-4 text-sm font-semibold text-gray-900">
+                                Status
+                              </th>
+                              <th className="text-right py-3 px-4 text-sm font-semibold text-gray-900">
+                                Actions
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {users.map((user) => (
+                              <tr
+                                key={user.id}
+                                className="border-b border-gray-100 hover:bg-gray-50"
+                              >
+                                <td className="py-3 px-4 text-sm text-gray-900">
+                                  {user.username}
+                                </td>
+                                <td className="py-3 px-4 text-sm text-gray-600">
+                                  {user.email}
+                                </td>
+                                <td className="py-3 px-4 text-sm text-gray-600">
+                                  {user.first_name} {user.last_name}
+                                </td>
+                                <td className="py-3 px-4">
+                                  {user.is_approved ? (
+                                    <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">
+                                      <Check className="h-3 w-3" />
+                                      Approved
+                                    </span>
+                                  ) : (
+                                    <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-700">
+                                      <X className="h-3 w-3" />
+                                      Pending
+                                    </span>
+                                  )}
+                                </td>
+                                <td className="py-3 px-4 text-right">
+                                  <div className="flex justify-end gap-2">
+                                    {!user.is_approved ? (
+                                      <Button
+                                        onClick={() =>
+                                          handleApproveUser(user.id)
+                                        }
+                                        size="sm"
+                                        className="bg-green-600 hover:bg-green-700 text-white"
+                                      >
+                                        <Check className="h-3 w-3 mr-1" />
+                                        Approve
+                                      </Button>
+                                    ) : (
+                                      <Button
+                                        onClick={() =>
+                                          handleDisapproveUser(user.id)
+                                        }
+                                        size="sm"
+                                        variant="outline"
+                                        className="border-red-200 text-red-600 hover:bg-red-50"
+                                      >
+                                        <X className="h-3 w-3 mr-1" />
+                                        Disapprove
+                                      </Button>
+                                    )}
+                                  </div>
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    )}
+                  </div>
+                )}
               </CardContent>
             </Card>
           )}

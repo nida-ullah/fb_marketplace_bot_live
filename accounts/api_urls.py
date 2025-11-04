@@ -11,6 +11,13 @@ urlpatterns = [
     path('auth/user/', api_views.get_user, name='get_user'),
     path('auth/change-password/', api_views.change_password, name='change_password'),
 
+    # User management (Admin only)
+    path('auth/users/', api_views.get_all_users, name='get_all_users'),
+    path('auth/users/<int:user_id>/approve/',
+         api_views.approve_user, name='approve_user'),
+    path('auth/users/<int:user_id>/disapprove/',
+         api_views.disapprove_user, name='disapprove_user'),
+
     # Dashboard stats
     path('stats/dashboard/', api_views.dashboard_stats, name='dashboard_stats'),
 

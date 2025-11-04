@@ -512,3 +512,113 @@ def update_account_session(request, pk):
             {'error': 'Account not found'},
             status=status.HTTP_404_NOT_FOUND
         )
+
+
+# Admin User Management Views
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_all_users(request):
+    """Get all users - only accessible by admin users"""
+    # Check if user is admin (staff or superuser)
+    if not (request.user.is_staff or request.user.is_superuser):
+        return Response(
+            {'error': 'You do not have permission to access this resource'},
+            status=status.HTTP_403_FORBIDDEN
+        )
+
+    # Get all users
+    users = CustomUser.objects.all().order_by('-date_joined')
+
+    # Serialize user data
+    users_data = []
+    for user in users:
+        users_data.append({
+            'id': user.id,
+            'username': user.username,
+            'email': user.email,
+            'first_name': user.first_name,
+            'last_name': user.last_name,
+            'is_approved': user.is_approved,
+            'is_staff': user.is_staff,
+            'is_superuser': user.is_superuser,
+            'date_joined': user.date_joined
+        })
+
+    return Response({
+        'success': True,
+        'users': users_data
+    })
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def approve_user(request, user_id):
+    """Approve a user - only accessible by admin users"""
+    # Check if user is admin (staff or superuser)
+    if not (request.user.is_staff or request.user.is_superuser):
+        return Response(
+            {'error': 'You do not have permission to perform this action'},
+            status=status.HTTP_403_FORBIDDEN
+        )
+
+    try:
+        user = CustomUser.objects.get(id=user_id)
+
+        # Update user approval status
+        user.is_approved = True
+        user.save()
+
+        return Response({
+            'success': True,
+            'message': f'User {user.username} has been approved successfully'
+        })
+
+    except CustomUser.DoesNotExist:
+        return Response(
+            {'error': 'User not found'},
+            status=status.HTTP_404_NOT_FOUND
+        )
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def disapprove_user(request, user_id):
+    """Disapprove a user - only accessible by admin users"""
+    # Check if user is admin (staff or superuser)
+    if not (request.user.is_staff or request.user.is_superuser):
+        return Response(
+            {'error': 'You do not have permission to perform this action'},
+            status=status.HTTP_403_FORBIDDEN
+        )
+
+    try:
+        user = CustomUser.objects.get(id=user_id)
+
+        # Prevent disapproving superusers
+        if user.is_superuser:
+            return Response(
+                {'error': 'Cannot disapprove superuser accounts'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        # Prevent admin from disapproving themselves
+        if user.id == request.user.id:
+            return Response(
+                {'error': 'You cannot disapprove your own account'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        # Update user approval status
+        user.is_approved = False
+        user.save()
+
+        return Response({
+            'success': True,
+            'message': f'User {user.username} has been disapproved'
+        })
+
+    except CustomUser.DoesNotExist:
+        return Response(
+            {'error': 'User not found'},
+            status=status.HTTP_404_NOT_FOUND
+        )

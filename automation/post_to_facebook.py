@@ -1,19 +1,20 @@
 from playwright.sync_api import sync_playwright
 import time
 import os
+from django.conf import settings
 
 
 def debug_page_state(page, step_name):
     """Helper function to debug page state at any point"""
     print(f"\n🔍 DEBUG: {step_name}")
     print(f"   URL: {page.url}")
-    
+
     # Check for error messages
     errors = page.locator("[role='alert'], .error").all()
     error_count = sum(1 for e in errors if e.is_visible())
     if error_count > 0:
         print(f"   ⚠️ Found {error_count} error message(s)")
-    
+
     # Check for buttons
     buttons = page.locator("button").all()
     visible_buttons = []
@@ -25,86 +26,93 @@ def debug_page_state(page, step_name):
                     visible_buttons.append(text.strip())
         except Exception:
             pass
-    
+
     if visible_buttons:
-        print(f"   📍 Visible buttons: {', '.join(set(visible_buttons[:5]))}")  # Show first 5 unique
+        # Show first 5 unique
+        print(f"   📍 Visible buttons: {', '.join(set(visible_buttons[:5]))}")
     else:
         print("   ⚠️ No visible buttons found")
     print()
 
 
 def save_session(email, password=None):
+    """
+    Save Facebook login session
+    Always runs with visible browser (headless=False) so user can solve CAPTCHA
+    """
     with sync_playwright() as p:
-        browser = p.chromium.launch(headless=False)
+        print("🖥️  Opening browser for login (visible mode for CAPTCHA solving)")
+        browser = p.chromium.launch(headless=False)  # Always visible for login
         context = browser.new_context()
         page = context.new_page()
-        page.goto("https://www.facebook.com/login", wait_until="domcontentloaded")
+        page.goto("https://www.facebook.com/login",
+                  wait_until="domcontentloaded")
 
         login_successful = False
 
         if password:
             print(f"🔐 Auto-logging in for: {email}")
-            
+
             try:
                 page.fill('input[name="email"]', email)
                 page.fill('input[name="pass"]', password)
                 page.click('button[name="login"]')
-                
+
                 print("⏳ Waiting for login response...")
                 time.sleep(5)
-                
+
                 # Check if still on login page or error occurred
                 current_url = page.url
-                
+
                 # Check for various login failure indicators
                 is_still_login = (
-                    "login" in current_url or 
+                    "login" in current_url or
                     page.locator('input[name="email"]').is_visible() or
                     page.locator('input[name="pass"]').is_visible()
                 )
-                
+
                 # Check for checkpoint/captcha
                 is_checkpoint = (
-                    "checkpoint" in current_url or 
+                    "checkpoint" in current_url or
                     "captcha" in current_url or
                     page.locator('text=Security Check').is_visible() or
                     page.locator('text=Enter the code').is_visible()
                 )
-                
+
                 if is_checkpoint:
                     print("🔒 Captcha/2FA/Checkpoint detected!")
                     print("👉 Please solve it manually in the browser...")
                     print("⏳ Waiting 90 seconds for you to complete...")
                     time.sleep(90)
-                    
+
                     # Verify login after manual intervention
                     current_url = page.url
                     is_logged_in = (
-                        "facebook.com" in current_url and 
+                        "facebook.com" in current_url and
                         "login" not in current_url and
                         "checkpoint" not in current_url and
                         not page.locator('input[name="email"]').is_visible()
                     )
-                    
+
                     if is_logged_in:
                         login_successful = True
                         print("✅ Login successful after solving checkpoint!")
                     else:
                         print("❌ Login still not completed - checkpoint not solved")
-                        
+
                 elif is_still_login:
                     print("❌ Login failed - wrong password or blocked")
-                    
+
                 else:
                     # Appears to be logged in
                     login_successful = True
                     print("✅ Auto-login successful!")
-                    
+
             except Exception as e:
                 print(f"⚠️ Auto-login failed: {e}")
                 print("👉 Please log in manually")
                 time.sleep(60)
-                
+
                 # Check if manual login succeeded
                 try:
                     current_url = page.url
@@ -117,7 +125,7 @@ def save_session(email, password=None):
             print(f"👉 Please log in manually for: {email}")
             print("⏳ You have 60 seconds...")
             time.sleep(60)
-            
+
             # Check if manual login succeeded
             try:
                 current_url = page.url
@@ -133,7 +141,7 @@ def save_session(email, password=None):
             print(f"✅ Session saved: {session_path}")
         else:
             print(f"❌ Session NOT saved - Login failed for {email}")
-            
+
         browser.close()
         return login_successful
 
@@ -144,50 +152,71 @@ def auto_login_and_save_session(email, password):
         browser = p.chromium.launch(headless=False)
         context = browser.new_context()
         page = context.new_page()
-        
+
         print(f"🌐 Opening Facebook login page...")
         page.goto("https://www.facebook.com/login", timeout=60000)
         page.wait_for_timeout(3000)
-        
+
         print(f"📧 Entering email: {email}")
         email_input = page.locator("input[name='email']")
         email_input.fill(email)
-        
+
         print(f"🔒 Entering password...")
         password_input = page.locator("input[name='pass']")
         password_input.fill(password)
-        
+
         print(f"🔐 Clicking login button...")
         login_button = page.locator("button[name='login']")
         login_button.click()
-        
+
         # Wait for login to complete
         print(f"⏳ Waiting for login to complete...")
         page.wait_for_timeout(10000)
-        
+
         # Check if login was successful
         if "login" in page.url.lower():
             print(f"❌ Login may have failed - still on login page")
             browser.close()
             return False
-        
+
         session_path = f"sessions/{email.replace('@', '_').replace('.', '_')}.json"
         context.storage_state(path=session_path)
         print(f"✅ Session saved: {session_path}")
-        
+
         browser.close()
         return True
 
 
 # def login_and_post(email, title, description, price, image_path, location):
-def login_and_post(email, title, description, price, image_path):
+def login_and_post(email, title, description, price, image_path, headless=True):
+    """
+    Post to Facebook Marketplace
+
+    Args:
+        email: Facebook account email
+        title: Post title
+        description: Post description
+        price: Item price
+        image_path: Path to product image
+        headless: Run in headless mode (default: True for background posting)
+    """
     session_file = f"sessions/{email.replace('@', '_').replace('.', '_')}.json"
     if not os.path.exists(session_file):
         raise Exception(
             f"❌ Session not found. Run save_session('{email}') first.")
 
     with sync_playwright() as p:
-        browser = p.chromium.launch(headless=False)
+        # Run in headless mode by default for automated posting
+        # Use settings value if headless parameter not explicitly provided
+        use_headless = headless if headless is not None else getattr(
+            settings, 'AUTOMATION_HEADLESS_MODE', True)
+
+        if use_headless:
+            print("🤖 Running in HEADLESS mode (background posting)")
+        else:
+            print("🖥️  Running in VISIBLE mode (browser window will open)")
+
+        browser = p.chromium.launch(headless=use_headless)
         context = browser.new_context(storage_state=session_file)
         page = context.new_page()
 
@@ -436,13 +465,14 @@ def login_and_post(email, title, description, price, image_path):
 
             # Debug: Check page state after filling all fields
             debug_page_state(page, "After filling all fields")
-            
+
             # Check for any validation errors before proceeding
             print("🔍 Checking for validation errors...")
             page.wait_for_timeout(1000)
-            
+
             # Look for error messages or required field indicators
-            error_indicators = page.locator("[role='alert'], .error, [aria-invalid='true']").all()
+            error_indicators = page.locator(
+                "[role='alert'], .error, [aria-invalid='true']").all()
             if error_indicators:
                 print("⚠️ Warning: Found potential validation errors on the page")
                 for i, indicator in enumerate(error_indicators):
@@ -452,7 +482,7 @@ def login_and_post(email, title, description, price, image_path):
                             print(f"  Error {i+1}: {text}")
                     except Exception:
                         pass
-            
+
             # Scroll to bottom to ensure all fields are visible and validated
             print("📜 Scrolling to bottom of form...")
             page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
@@ -460,7 +490,7 @@ def login_and_post(email, title, description, price, image_path):
 
             print("📤 Looking for Next button...")
             next_clicked = False
-            
+
             # Try multiple approaches to click Next button
             # Approach 1: Text-based selector
             try:
@@ -474,7 +504,7 @@ def login_and_post(email, title, description, price, image_path):
                         break
             except Exception:
                 pass
-            
+
             # Approach 2: Role-based selector
             if not next_clicked:
                 try:
@@ -485,7 +515,7 @@ def login_and_post(email, title, description, price, image_path):
                         print("✅ Clicked Next button (via role)")
                 except Exception:
                     pass
-            
+
             # Approach 3: Try finding button with aria-label
             if not next_clicked:
                 try:
@@ -496,24 +526,25 @@ def login_and_post(email, title, description, price, image_path):
                         print("✅ Clicked Next button (via aria-label)")
                 except Exception:
                     pass
-            
+
             if not next_clicked:
-                print("⚠️ Could not find Next button - form might be single page, looking for Publish directly")
+                print(
+                    "⚠️ Could not find Next button - form might be single page, looking for Publish directly")
             else:
                 # Wait for page transition after clicking Next
                 page.wait_for_timeout(3000)
                 print("⏳ Waiting for Publish button to appear...")
-            
+
             # Debug: Check page state after Next button
             debug_page_state(page, "After Next button (or if no Next button)")
-            
+
             # Scroll to bottom again to reveal Publish button
             page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
             page.wait_for_timeout(2000)
-            
+
             print("🔍 Looking for Publish button...")
             publish_clicked = False
-            
+
             # Try multiple variations of the Publish button
             publish_variations = [
                 "Publish",
@@ -523,11 +554,11 @@ def login_and_post(email, title, description, price, image_path):
                 "Confirm",
                 "Submit"
             ]
-            
+
             for variation in publish_variations:
                 if publish_clicked:
                     break
-                    
+
                 # Try text-based selector
                 try:
                     publish_buttons = page.locator(f"text='{variation}'").all()
@@ -537,31 +568,34 @@ def login_and_post(email, title, description, price, image_path):
                             page.wait_for_timeout(1000)
                             btn.click()
                             publish_clicked = True
-                            print(f"✅ Clicked Publish button (found as '{variation}')")
+                            print(
+                                f"✅ Clicked Publish button (found as '{variation}')")
                             break
                 except Exception:
                     pass
-                
+
                 # Try role-based selector
                 if not publish_clicked:
                     try:
-                        publish_btn = page.get_by_role("button", name=variation)
+                        publish_btn = page.get_by_role(
+                            "button", name=variation)
                         if publish_btn.is_visible():
                             publish_btn.scroll_into_view_if_needed()
                             page.wait_for_timeout(1000)
                             publish_btn.click()
                             publish_clicked = True
-                            print(f"✅ Clicked Publish button (role, found as '{variation}')")
+                            print(
+                                f"✅ Clicked Publish button (role, found as '{variation}')")
                             break
                     except Exception:
                         pass
-            
+
             if not publish_clicked:
                 # Last resort: Take a screenshot and print all buttons for debugging
                 print("❌ Could not find Publish button!")
                 page.screenshot(path="publish_button_missing.png")
                 print("📷 Screenshot saved as publish_button_missing.png")
-                
+
                 # Print all visible buttons for debugging
                 print("\n🔍 DEBUG: All visible buttons on page:")
                 buttons = page.locator("button").all()
@@ -570,12 +604,14 @@ def login_and_post(email, title, description, price, image_path):
                         if btn.is_visible():
                             text = btn.inner_text()
                             aria_label = btn.get_attribute("aria-label")
-                            print(f"  Button {i}: text='{text}', aria-label='{aria_label}'")
+                            print(
+                                f"  Button {i}: text='{text}', aria-label='{aria_label}'")
                     except Exception:
                         pass
-                
-                raise Exception("Publish button not found after multiple attempts")
-            
+
+                raise Exception(
+                    "Publish button not found after multiple attempts")
+
             # Wait for posting to complete
             page.wait_for_timeout(3000)
             print("✅ Posted successfully!")

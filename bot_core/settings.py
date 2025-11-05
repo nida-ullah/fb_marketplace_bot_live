@@ -221,3 +221,30 @@ CORS_ALLOW_HEADERS = [
     'x-csrftoken',
     'x-requested-with',
 ]
+
+
+# ===========================
+# AUTOMATION SETTINGS
+# ===========================
+
+# Browser Automation Settings
+AUTOMATION_HEADLESS_MODE = os.environ.get(
+    'AUTOMATION_HEADLESS', 'True') == 'True'
+# Set to False to see browser window (useful for debugging)
+# Set to True for background posting (production mode)
+
+# Posting Delays (in seconds)
+AUTOMATION_POST_DELAY_MIN = int(os.environ.get(
+    'POST_DELAY_MIN', '30'))  # Minimum delay between posts
+AUTOMATION_POST_DELAY_MAX = int(os.environ.get(
+    'POST_DELAY_MAX', '120'))  # Maximum delay between posts
+
+# Account Limits
+AUTOMATION_MAX_POSTS_PER_ACCOUNT_PER_DAY = int(
+    os.environ.get('MAX_POSTS_PER_ACCOUNT', '10'))
+AUTOMATION_MAX_ACCOUNTS_PER_IP = int(
+    os.environ.get('MAX_ACCOUNTS_PER_IP', '5'))
+
+# Session Settings
+AUTOMATION_SESSION_TIMEOUT = int(os.environ.get(
+    'SESSION_TIMEOUT', '3600'))  # 1 hour in seconds

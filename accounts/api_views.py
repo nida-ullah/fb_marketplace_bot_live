@@ -9,7 +9,7 @@ from django.core.cache import cache
 from .serializers import UserSerializer, RegisterSerializer, FacebookAccountSerializer
 from .models import CustomUser, FacebookAccount
 from postings.models import MarketplacePost
-from automation.post_to_facebook import save_session
+from automation.post_to_facebook import save_session, manual_login_and_save_session
 from threading import Thread
 import os
 import re
@@ -347,6 +347,65 @@ def add_facebook_account_with_login(request):
     return Response({
         'message': 'Account created successfully. Browser opening for login...',
         'account': serializer.data
+    }, status=status.HTTP_201_CREATED)
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def add_facebook_account_manual_login(request):
+    """
+    Add a new Facebook account with FULLY MANUAL login
+    Browser opens, user types everything manually, solves CAPTCHA
+    Once logged in, session is saved automatically
+    """
+    email = request.data.get('email')
+
+    if not email:
+        return Response(
+            {'error': 'Email is required'},
+            status=status.HTTP_400_BAD_REQUEST
+        )
+
+    # Check if account already exists for this user
+    if FacebookAccount.objects.filter(email=email, user=request.user).exists():
+        return Response(
+            {'error': 'Account with this email already exists'},
+            status=status.HTTP_400_BAD_REQUEST
+        )
+
+    # Create account in database WITHOUT password (manual login)
+    account = FacebookAccount(
+        user=request.user,
+        email=email
+    )
+    # Set a placeholder password (won't be used for login)
+    account.set_password("manual_login_placeholder")
+    account.save()
+
+    # Start manual login in background thread
+    def manual_login():
+        try:
+            print(f"\n🖥️  Starting manual login for {email}...")
+            success = manual_login_and_save_session(email)
+            if success:
+                print(f"✅ Manual login completed successfully for {email}")
+            else:
+                print(f"❌ Manual login failed for {email}")
+                # Optionally delete the account if login failed
+                # account.delete()
+        except Exception as e:
+            print(f"❌ Error during manual login: {e}")
+
+    # Start the manual login process in a background thread
+    thread = Thread(target=manual_login, daemon=True)
+    thread.start()
+
+    # Return response immediately
+    serializer = FacebookAccountSerializer(account)
+    return Response({
+        'message': 'Account created. Browser opening for MANUAL login. Please login yourself!',
+        'account': serializer.data,
+        'instructions': 'A browser window will open. Please login manually and wait for confirmation.'
     }, status=status.HTTP_201_CREATED)
 
 

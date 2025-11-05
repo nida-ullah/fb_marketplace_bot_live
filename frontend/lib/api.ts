@@ -97,6 +97,9 @@ export const accountsAPI = {
   addWithLogin: (data: { email: string; password: string }) =>
     api.post("/accounts/add-with-login/", data),
 
+  addManualLogin: (email: string) =>
+    api.post("/accounts/add-manual-login/", { email }),
+
   updateSession: (id: number) => api.post(`/accounts/${id}/update-session/`),
 
   delete: (id: number) => api.delete(`/accounts/${id}/`),

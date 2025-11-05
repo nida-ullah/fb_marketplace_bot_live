@@ -146,6 +146,140 @@ def save_session(email, password=None):
         return login_successful
 
 
+def manual_login_and_save_session(email):
+    """
+    Open browser and let user manually login to Facebook
+    User types email, password, solves CAPTCHA, etc.
+    Once logged in, session is saved automatically
+
+    Args:
+        email: Facebook account email (used for session filename)
+
+    Returns:
+        bool: True if session saved successfully, False otherwise
+    """
+    with sync_playwright() as p:
+        print(f"\n🌐 Opening browser for MANUAL login...")
+        print(f"📧 Account: {email}")
+        print("=" * 60)
+        print("📝 INSTRUCTIONS:")
+        print("   1. Browser will open to Facebook login page")
+        print("   2. Manually type your email and password")
+        print("   3. Solve any CAPTCHA or security checks")
+        print("   4. Complete 2FA if required")
+        print("   5. Wait until you see Facebook homepage")
+        print("   6. Browser will close automatically and save session")
+        print("=" * 60)
+        print("⏳ You have 120 seconds to complete login...")
+        print()
+
+        # Slower for better observation
+        browser = p.chromium.launch(headless=False, slow_mo=100)
+
+        # Add realistic browser settings
+        context = browser.new_context(
+            user_agent='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+            viewport={'width': 1366, 'height': 768},
+            locale='en-US',
+            timezone_id='America/New_York'
+        )
+
+        page = context.new_page()
+
+        # Go to Facebook login
+        print("🌐 Loading Facebook login page...")
+        page.goto("https://www.facebook.com/login",
+                  wait_until="domcontentloaded", timeout=30000)
+
+        login_successful = False
+        check_interval = 5  # Check every 5 seconds
+        max_wait_time = 120  # 2 minutes total
+        elapsed_time = 0
+
+        print("👀 Waiting for you to login manually...")
+        print("💡 Tip: Take your time, the bot is watching and waiting!")
+        print()
+
+        # Monitor login progress
+        while elapsed_time < max_wait_time:
+            time.sleep(check_interval)
+            elapsed_time += check_interval
+
+            try:
+                current_url = page.url
+
+                # Check if successfully logged in (not on login page anymore)
+                is_logged_in = (
+                    "facebook.com" in current_url and
+                    "login" not in current_url and
+                    "checkpoint" not in current_url and
+                    "captcha" not in current_url
+                )
+
+                # Also check if login form is gone
+                login_form_gone = False
+                try:
+                    login_form_gone = not page.locator(
+                        'input[name="email"]').is_visible(timeout=1000)
+                except:
+                    login_form_gone = True  # Form not found = probably logged in
+
+                if is_logged_in and login_form_gone:
+                    login_successful = True
+                    print("✅ Login detected! You're now logged into Facebook!")
+                    print("💾 Saving session...")
+                    break
+                else:
+                    # Show progress
+                    remaining = max_wait_time - elapsed_time
+                    print(f"⏳ Still waiting... ({remaining}s remaining)")
+
+                    # Give hints based on URL
+                    if "checkpoint" in current_url:
+                        print(
+                            "   📍 Checkpoint detected - please complete verification")
+                    elif "captcha" in current_url:
+                        print("   🔒 CAPTCHA detected - please solve it")
+                    elif "login" in current_url:
+                        print("   📝 Still on login page - please enter credentials")
+
+            except Exception as e:
+                print(f"   ⚠️ Checking login status... ({str(e)[:50]})")
+                continue
+
+        # Final check
+        if not login_successful:
+            print("\n⏰ Time's up! Doing final check...")
+            time.sleep(2)
+            try:
+                current_url = page.url
+                if "facebook.com" in current_url and "login" not in current_url:
+                    login_successful = True
+                    print("✅ Login successful!")
+            except:
+                pass
+
+        # Save session if successful
+        if login_successful:
+            try:
+                session_path = f"sessions/{email.replace('@', '_').replace('.', '_')}.json"
+                os.makedirs("sessions", exist_ok=True)
+                context.storage_state(path=session_path)
+                print(f"✅ Session saved successfully: {session_path}")
+                print("🎉 You can now use this account for automated posting!")
+            except Exception as e:
+                print(f"❌ Failed to save session: {e}")
+                login_successful = False
+        else:
+            print("❌ Login failed or timed out")
+            print("💡 Tip: Try again and complete login faster")
+
+        print("\n🔒 Closing browser...")
+        browser.close()
+
+        return login_successful
+
+
 def auto_login_and_save_session(email, password):
     """Automatically login to Facebook and save session"""
     with sync_playwright() as p:

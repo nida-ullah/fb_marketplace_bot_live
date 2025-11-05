@@ -12,6 +12,7 @@ import {
   Plus,
   Upload,
   RefreshCw,
+  UserPlus,
 } from "lucide-react";
 import AddAccountModal from "@/components/AddAccountModal";
 import BulkUploadModal from "@/components/BulkUploadModal";
@@ -58,6 +59,48 @@ export default function AccountsPage() {
       console.error(err);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleManualLogin = async () => {
+    // Prompt user for email
+    const email = prompt("Enter Facebook account email:");
+
+    if (!email || !email.trim()) {
+      return; // User cancelled or entered nothing
+    }
+
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      alert("Please enter a valid email address");
+      return;
+    }
+
+    try {
+      const response = await accountsAPI.addManualLogin(email);
+
+      // Show success message with instructions
+      alert(
+        `✅ Account created!\n\n` +
+          `📌 INSTRUCTIONS:\n` +
+          `1. A browser window will open shortly\n` +
+          `2. Manually login to Facebook\n` +
+          `3. Solve any CAPTCHA if shown\n` +
+          `4. Wait until logged in\n` +
+          `5. Browser will close automatically\n\n` +
+          `⏰ You have 2 minutes to complete login`
+      );
+
+      // Refresh accounts list after a delay (give time for login)
+      setTimeout(() => {
+        fetchAccounts();
+      }, 3000);
+    } catch (err: any) {
+      const errorMsg =
+        err.response?.data?.error || "Failed to start manual login";
+      alert(`❌ Error: ${errorMsg}`);
+      console.error(err);
     }
   };
 
@@ -247,6 +290,14 @@ export default function AccountsPage() {
           >
             <Upload size={20} />
             Upload Multiple Accounts
+          </Button>
+          <Button
+            onClick={handleManualLogin}
+            variant="outline"
+            className="flex items-center gap-2 border-green-500 text-green-600 hover:bg-green-50"
+          >
+            <UserPlus size={20} />
+            Manual Login
           </Button>
           <Button
             onClick={() => setIsModalOpen(true)}

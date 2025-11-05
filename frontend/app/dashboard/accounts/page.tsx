@@ -13,6 +13,7 @@ import {
   Upload,
   RefreshCw,
   UserPlus,
+  X,
 } from "lucide-react";
 import AddAccountModal from "@/components/AddAccountModal";
 import BulkUploadModal from "@/components/BulkUploadModal";
@@ -31,6 +32,10 @@ export default function AccountsPage() {
   const [error, setError] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isBulkUploadOpen, setIsBulkUploadOpen] = useState(false);
+  const [isManualLoginOpen, setIsManualLoginOpen] = useState(false);
+  const [manualLoginEmail, setManualLoginEmail] = useState("");
+  const [manualLoginLoading, setManualLoginLoading] = useState(false);
+  const [manualLoginError, setManualLoginError] = useState("");
   const [updatingSessionId, setUpdatingSessionId] = useState<number | null>(
     null
   );
@@ -62,35 +67,25 @@ export default function AccountsPage() {
     }
   };
 
-  const handleManualLogin = async () => {
-    // Prompt user for email
-    const email = prompt("Enter Facebook account email:");
-
-    if (!email || !email.trim()) {
-      return; // User cancelled or entered nothing
-    }
+  const handleManualLoginSubmit = async () => {
+    // Clear previous error
+    setManualLoginError("");
 
     // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      alert("Please enter a valid email address");
+    if (!emailRegex.test(manualLoginEmail)) {
+      setManualLoginError("Please enter a valid email address");
       return;
     }
 
     try {
-      const response = await accountsAPI.addManualLogin(email);
+      setManualLoginLoading(true);
+      await accountsAPI.addManualLogin(manualLoginEmail);
 
-      // Show success message with instructions
-      alert(
-        `✅ Account created!\n\n` +
-          `📌 INSTRUCTIONS:\n` +
-          `1. A browser window will open shortly\n` +
-          `2. Manually login to Facebook\n` +
-          `3. Solve any CAPTCHA if shown\n` +
-          `4. Wait until logged in\n` +
-          `5. Browser will close automatically\n\n` +
-          `⏰ You have 2 minutes to complete login`
-      );
+      // Close modal
+      setIsManualLoginOpen(false);
+      setManualLoginEmail("");
+      setManualLoginError("");
 
       // Refresh accounts list after a delay (give time for login)
       setTimeout(() => {
@@ -99,8 +94,14 @@ export default function AccountsPage() {
     } catch (err: any) {
       const errorMsg =
         err.response?.data?.error || "Failed to start manual login";
-      alert(`❌ Error: ${errorMsg}`);
-      console.error(err);
+      setManualLoginError(errorMsg);
+
+      // Only log unexpected errors to console (not validation errors)
+      if (err.response?.status !== 400) {
+        console.error(err);
+      }
+    } finally {
+      setManualLoginLoading(false);
     }
   };
 
@@ -272,6 +273,104 @@ export default function AccountsPage() {
         onSuccess={fetchAccounts}
       />
 
+      {/* Manual Login Modal */}
+      {isManualLoginOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+          <div className="bg-white rounded-lg shadow-2xl w-full max-w-md mx-4 overflow-hidden p-6">
+            <h2 className="text-xl font-bold text-gray-900 mb-4">
+              Manual Login
+            </h2>
+            <p className="text-gray-600 mb-4 text-sm">
+              Enter your Facebook email. A browser will open for you to login
+              manually.
+            </p>
+
+            <div className="space-y-4">
+              <div>
+                <label
+                  htmlFor="manualEmail"
+                  className="block text-sm font-semibold text-gray-700 mb-2"
+                >
+                  Facebook Email
+                </label>
+                <input
+                  id="manualEmail"
+                  type="email"
+                  value={manualLoginEmail}
+                  onChange={(e) => {
+                    setManualLoginEmail(e.target.value);
+                    setManualLoginError(""); // Clear error when typing
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" && !manualLoginLoading) {
+                      handleManualLoginSubmit();
+                    }
+                  }}
+                  placeholder="your.email@example.com"
+                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:border-transparent text-gray-900 ${
+                    manualLoginError
+                      ? "border-red-500 focus:ring-red-500"
+                      : "border-gray-300 focus:ring-green-500"
+                  }`}
+                  disabled={manualLoginLoading}
+                  autoFocus
+                />
+                {manualLoginError && (
+                  <p className="mt-2 text-sm text-red-600 flex items-center gap-1">
+                    <X size={16} />
+                    {manualLoginError}
+                  </p>
+                )}
+              </div>
+
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+                <p className="text-xs text-blue-800 font-medium mb-1">
+                  ℹ️ What happens next:
+                </p>
+                <ul className="text-xs text-blue-700 space-y-1 ml-4 list-disc">
+                  <li>Browser opens to Facebook login</li>
+                  <li>You type email & password manually</li>
+                  <li>Solve CAPTCHA if shown</li>
+                  <li>Browser closes automatically</li>
+                  <li>Session saved for posting!</li>
+                </ul>
+              </div>
+
+              <div className="flex gap-3 justify-end">
+                <Button
+                  onClick={() => {
+                    setIsManualLoginOpen(false);
+                    setManualLoginEmail("");
+                    setManualLoginError("");
+                  }}
+                  variant="outline"
+                  disabled={manualLoginLoading}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  onClick={handleManualLoginSubmit}
+                  className="bg-green-600 hover:bg-green-700 text-white"
+                  disabled={manualLoginLoading || !manualLoginEmail.trim()}
+                >
+                  {manualLoginLoading ? (
+                    <>
+                      <RefreshCw size={16} className="animate-spin mr-2" />
+                      Opening Browser...
+                    </>
+                  ) : (
+                    <>
+                      <UserPlus size={16} className="mr-2" />
+                      Start Manual Login
+                    </>
+                  )}
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
@@ -292,9 +391,8 @@ export default function AccountsPage() {
             Upload Multiple Accounts
           </Button>
           <Button
-            onClick={handleManualLogin}
-            variant="outline"
-            className="flex items-center gap-2 border-green-500 text-green-600 hover:bg-green-50"
+            onClick={() => setIsManualLoginOpen(true)}
+            className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white"
           >
             <UserPlus size={20} />
             Manual Login

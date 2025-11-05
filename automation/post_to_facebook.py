@@ -206,6 +206,12 @@ def manual_login_and_save_session(email):
             elapsed_time += check_interval
 
             try:
+                # Check if browser/page is still open
+                if page.is_closed():
+                    print("\n🔒 Browser closed by user")
+                    print("❌ Login cancelled")
+                    break
+
                 current_url = page.url
 
                 # Check if successfully logged in (not on login page anymore)
@@ -244,6 +250,12 @@ def manual_login_and_save_session(email):
                         print("   📝 Still on login page - please enter credentials")
 
             except Exception as e:
+                # If we get an error, browser might be closed
+                error_str = str(e).lower()
+                if "closed" in error_str or "target" in error_str:
+                    print("\n🔒 Browser closed by user")
+                    print("❌ Login cancelled")
+                    break
                 print(f"   ⚠️ Checking login status... ({str(e)[:50]})")
                 continue
 

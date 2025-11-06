@@ -86,6 +86,16 @@ export const authAPI = {
 
   disapproveUser: (userId: number) =>
     api.post(`/auth/users/${userId}/disapprove/`),
+
+  updateUserPermissions: (
+    userId: number,
+    data: { is_staff: boolean; is_superuser: boolean }
+  ) => api.post(`/auth/users/${userId}/update-permissions/`, data),
+
+  resetUserPassword: (userId: number, newPassword: string) =>
+    api.post(`/auth/users/${userId}/reset-password/`, {
+      new_password: newPassword,
+    }),
 };
 
 export const accountsAPI = {

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Fragment } from "react";
 import { useRouter } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
@@ -13,6 +13,10 @@ import {
   UserCog,
   Check,
   X,
+  Key,
+  Settings,
+  ChevronDown,
+  ChevronUp,
 } from "lucide-react";
 import { authAPI } from "@/lib/api";
 import { useToast, ToastContainer } from "@/components/ui/Toast";
@@ -50,6 +54,17 @@ export default function SettingsPage() {
   const [isAdmin, setIsAdmin] = useState(false);
   const [users, setUsers] = useState<UserData[]>([]);
   const [usersLoading, setUsersLoading] = useState(false);
+  const [selectedUser, setSelectedUser] = useState<UserData | null>(null);
+  const [showPermissionsModal, setShowPermissionsModal] = useState(false);
+  const [showResetPasswordModal, setShowResetPasswordModal] = useState(false);
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmNewPassword, setConfirmNewPassword] = useState("");
+  const [expandedUserId, setExpandedUserId] = useState<number | null>(null);
+  const [currentUser, setCurrentUser] = useState<UserData | null>(null);
+  const [permissionsData, setPermissionsData] = useState({
+    is_staff: false,
+    is_superuser: false,
+  });
   const { toasts, removeToast, success, error: showError } = useToast();
 
   const handleLogout = () => {
@@ -98,6 +113,18 @@ export default function SettingsPage() {
         last_name: response.data.last_name || "",
       });
 
+      // Store current user data
+      setCurrentUser({
+        id: response.data.id,
+        username: response.data.username,
+        email: response.data.email,
+        first_name: response.data.first_name,
+        last_name: response.data.last_name,
+        is_approved: response.data.is_approved,
+        is_staff: response.data.is_staff,
+        is_superuser: response.data.is_superuser,
+      });
+
       // Check if user is admin
       setIsAdmin(response.data.is_staff || response.data.is_superuser || false);
     } catch (err) {
@@ -141,6 +168,74 @@ export default function SettingsPage() {
       showError("Failed to disapprove user");
       console.error(err);
     }
+  };
+
+  const handleOpenPermissionsModal = (user: UserData) => {
+    setSelectedUser(user);
+    setPermissionsData({
+      is_staff: user.is_staff,
+      is_superuser: user.is_superuser,
+    });
+    setShowPermissionsModal(true);
+  };
+
+  const handleUpdatePermissions = async () => {
+    if (!selectedUser) return;
+
+    try {
+      setLoading(true);
+      // You'll need to create this API endpoint
+      await authAPI.updateUserPermissions(selectedUser.id, permissionsData);
+      success("Permissions updated successfully");
+      setShowPermissionsModal(false);
+      fetchUsers();
+    } catch (err) {
+      showError("Failed to update permissions");
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleOpenResetPasswordModal = (user: UserData) => {
+    setSelectedUser(user);
+    setNewPassword("");
+    setConfirmNewPassword("");
+    setShowResetPasswordModal(true);
+  };
+
+  const handleResetPassword = async () => {
+    if (!selectedUser) return;
+
+    if (newPassword !== confirmNewPassword) {
+      showError("Passwords do not match");
+      return;
+    }
+
+    const validation = validatePassword(newPassword);
+    if (!validation.isValid) {
+      showError("Password does not meet requirements");
+      return;
+    }
+
+    try {
+      setLoading(true);
+      // You'll need to create this API endpoint
+      await authAPI.resetUserPassword(selectedUser.id, newPassword);
+      success("Password reset successfully");
+      setShowResetPasswordModal(false);
+      setNewPassword("");
+      setConfirmNewPassword("");
+    } catch (err) {
+      showError("Failed to reset password");
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const toggleUserExpansion = (userId: number) => {
+    setExpandedUserId(expandedUserId === userId ? null : userId);
   };
 
   useEffect(() => {
@@ -648,7 +743,7 @@ export default function SettingsPage() {
                       <div className="overflow-x-auto">
                         <table className="w-full">
                           <thead>
-                            <tr className="border-b border-gray-200">
+                            <tr className="border-b-2 border-gray-300">
                               <th className="text-left py-3 px-4 text-sm font-semibold text-gray-900">
                                 Username
                               </th>
@@ -661,68 +756,167 @@ export default function SettingsPage() {
                               <th className="text-left py-3 px-4 text-sm font-semibold text-gray-900">
                                 Status
                               </th>
-                              <th className="text-right py-3 px-4 text-sm font-semibold text-gray-900">
-                                Actions
-                              </th>
                             </tr>
                           </thead>
                           <tbody>
                             {users.map((user) => (
-                              <tr
-                                key={user.id}
-                                className="border-b border-gray-100 hover:bg-gray-50"
-                              >
-                                <td className="py-3 px-4 text-sm text-gray-900">
-                                  {user.username}
-                                </td>
-                                <td className="py-3 px-4 text-sm text-gray-600">
-                                  {user.email}
-                                </td>
-                                <td className="py-3 px-4 text-sm text-gray-600">
-                                  {user.first_name} {user.last_name}
-                                </td>
-                                <td className="py-3 px-4">
-                                  {user.is_approved ? (
-                                    <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">
-                                      <Check className="h-3 w-3" />
-                                      Approved
-                                    </span>
-                                  ) : (
-                                    <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-700">
-                                      <X className="h-3 w-3" />
-                                      Pending
-                                    </span>
-                                  )}
-                                </td>
-                                <td className="py-3 px-4 text-right">
-                                  <div className="flex justify-end gap-2">
-                                    {!user.is_approved ? (
-                                      <Button
-                                        onClick={() =>
-                                          handleApproveUser(user.id)
-                                        }
-                                        size="sm"
-                                        className="bg-green-600 hover:bg-green-700 text-white"
-                                      >
-                                        <Check className="h-3 w-3 mr-1" />
-                                        Approve
-                                      </Button>
+                              <Fragment key={user.id}>
+                                {/* Main User Row - Clickable */}
+                                <tr
+                                  onClick={() => toggleUserExpansion(user.id)}
+                                  className="border-b border-gray-200 hover:bg-gray-50 cursor-pointer transition-colors"
+                                >
+                                  <td className="py-3 px-4">
+                                    <div className="flex items-center gap-2">
+                                      {expandedUserId === user.id ? (
+                                        <ChevronUp className="h-4 w-4 text-gray-600 flex-shrink-0" />
+                                      ) : (
+                                        <ChevronDown className="h-4 w-4 text-gray-600 flex-shrink-0" />
+                                      )}
+                                      <span className="text-sm font-medium text-gray-900">
+                                        {user.username}
+                                      </span>
+                                    </div>
+                                  </td>
+                                  <td className="py-3 px-4 text-sm text-gray-600">
+                                    {user.email}
+                                  </td>
+                                  <td className="py-3 px-4 text-sm text-gray-600">
+                                    {user.first_name && user.last_name
+                                      ? `${user.first_name} ${user.last_name}`
+                                      : "-"}
+                                  </td>
+                                  <td className="py-3 px-4">
+                                    {user.is_approved ? (
+                                      <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium bg-green-50 text-green-700 border border-green-200">
+                                        <Check className="h-3 w-3" />
+                                        Approved
+                                      </span>
                                     ) : (
-                                      <Button
-                                        onClick={() =>
-                                          handleDisapproveUser(user.id)
-                                        }
-                                        size="sm"
-                                        variant="outline"
-                                        className="border-red-200 text-red-600 hover:bg-red-50"
-                                      >
-                                        <X className="h-3 w-3 mr-1" />
-                                        Disapprove
-                                      </Button>
+                                      <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium bg-yellow-50 text-yellow-700 border border-yellow-200">
+                                        <X className="h-3 w-3" />
+                                        Pending
+                                      </span>
                                     )}
-                                  </div>
-                                </td>
-                              </tr>
+                                  </td>
+                                </tr>
+
+                                {/* Expanded Actions Row */}
+                                {expandedUserId === user.id && (
+                                  <tr className="bg-gray-50">
+                                    <td colSpan={4} className="p-4">
+                                      <div className="space-y-3">
+                                        {/* Password Reset - Available to all admins (staff and superuser) */}
+                                        <div className="flex items-center justify-between p-3 bg-white rounded-lg border border-gray-200">
+                                          <div className="flex items-center gap-3">
+                                            <div className="h-8 w-8 rounded-lg bg-purple-100 flex items-center justify-center">
+                                              <Key className="h-4 w-4 text-purple-600" />
+                                            </div>
+                                            <div>
+                                              <p className="text-sm font-semibold text-gray-900">
+                                                Reset Password
+                                              </p>
+                                              <p className="text-xs text-gray-600">
+                                                Set a new password for this user
+                                              </p>
+                                            </div>
+                                          </div>
+                                          <Button
+                                            onClick={() =>
+                                              handleOpenResetPasswordModal(user)
+                                            }
+                                            size="sm"
+                                            className="bg-purple-600 hover:bg-purple-700 text-white"
+                                          >
+                                            Reset
+                                          </Button>
+                                        </div>
+
+                                        {/* Permissions - Only visible to superusers */}
+                                        {currentUser?.is_superuser && (
+                                          <div className="flex items-center justify-between p-3 bg-white rounded-lg border border-gray-200">
+                                            <div className="flex items-center gap-3">
+                                              <div className="h-8 w-8 rounded-lg bg-blue-100 flex items-center justify-center">
+                                                <Settings className="h-4 w-4 text-blue-600" />
+                                              </div>
+                                              <div>
+                                                <p className="text-sm font-semibold text-gray-900">
+                                                  Manage Permissions
+                                                </p>
+                                                <p className="text-xs text-gray-600">
+                                                  Change staff and superuser
+                                                  status
+                                                </p>
+                                              </div>
+                                            </div>
+                                            <Button
+                                              onClick={() =>
+                                                handleOpenPermissionsModal(user)
+                                              }
+                                              size="sm"
+                                              className="bg-blue-600 hover:bg-blue-700 text-white"
+                                            >
+                                              Edit
+                                            </Button>
+                                          </div>
+                                        )}
+
+                                        {/* Approval - Available to all admins (staff and superuser) */}
+                                        <div className="flex items-center justify-between p-3 bg-white rounded-lg border border-gray-200">
+                                          <div className="flex items-center gap-3">
+                                            <div
+                                              className={`h-8 w-8 rounded-lg flex items-center justify-center ${
+                                                user.is_approved
+                                                  ? "bg-red-100"
+                                                  : "bg-green-100"
+                                              }`}
+                                            >
+                                              {user.is_approved ? (
+                                                <X className="h-4 w-4 text-red-600" />
+                                              ) : (
+                                                <Check className="h-4 w-4 text-green-600" />
+                                              )}
+                                            </div>
+                                            <div>
+                                              <p className="text-sm font-semibold text-gray-900">
+                                                {user.is_approved
+                                                  ? "Disapprove User"
+                                                  : "Approve User"}
+                                              </p>
+                                              <p className="text-xs text-gray-600">
+                                                {user.is_approved
+                                                  ? "Revoke user access to the system"
+                                                  : "Grant user access to the system"}
+                                              </p>
+                                            </div>
+                                          </div>
+                                          {!user.is_approved ? (
+                                            <Button
+                                              onClick={() =>
+                                                handleApproveUser(user.id)
+                                              }
+                                              size="sm"
+                                              className="bg-green-600 hover:bg-green-700 text-white"
+                                            >
+                                              Approve
+                                            </Button>
+                                          ) : (
+                                            <Button
+                                              onClick={() =>
+                                                handleDisapproveUser(user.id)
+                                              }
+                                              size="sm"
+                                              className="bg-red-600 hover:bg-red-700 text-white"
+                                            >
+                                              Disapprove
+                                            </Button>
+                                          )}
+                                        </div>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                )}
+                              </Fragment>
                             ))}
                           </tbody>
                         </table>
@@ -735,6 +929,217 @@ export default function SettingsPage() {
           )}
         </div>
       </div>
+
+      {/* Permissions Modal */}
+      {showPermissionsModal && selectedUser && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+          <div className="bg-white rounded-lg shadow-2xl w-full max-w-md mx-4 p-6">
+            <h2 className="text-xl font-bold text-gray-900 mb-4">
+              Change Permissions - {selectedUser.username}
+            </h2>
+
+            <div className="space-y-4">
+              <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+                <div>
+                  <h3 className="font-semibold text-gray-900">Staff Status</h3>
+                  <p className="text-sm text-gray-600">
+                    Can access admin panel
+                  </p>
+                </div>
+                <input
+                  type="checkbox"
+                  checked={permissionsData.is_staff}
+                  onChange={(e) =>
+                    setPermissionsData({
+                      ...permissionsData,
+                      is_staff: e.target.checked,
+                    })
+                  }
+                  className="h-5 w-5 text-blue-600 rounded focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+
+              <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+                <div>
+                  <h3 className="font-semibold text-gray-900">
+                    Superuser Status
+                  </h3>
+                  <p className="text-sm text-gray-600">Full system access</p>
+                </div>
+                <input
+                  type="checkbox"
+                  checked={permissionsData.is_superuser}
+                  onChange={(e) =>
+                    setPermissionsData({
+                      ...permissionsData,
+                      is_superuser: e.target.checked,
+                    })
+                  }
+                  className="h-5 w-5 text-blue-600 rounded focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+
+              {permissionsData.is_superuser && (
+                <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
+                  <p className="text-sm text-yellow-800">
+                    ⚠️ <strong>Warning:</strong> Superuser has full system
+                    access including all data and settings.
+                  </p>
+                </div>
+              )}
+            </div>
+
+            <div className="flex gap-3 justify-end mt-6">
+              <Button
+                onClick={() => setShowPermissionsModal(false)}
+                variant="outline"
+                disabled={loading}
+              >
+                Cancel
+              </Button>
+              <Button
+                onClick={handleUpdatePermissions}
+                disabled={loading}
+                className="bg-blue-600 hover:bg-blue-700 text-white"
+              >
+                {loading ? "Saving..." : "Save Changes"}
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Reset Password Modal */}
+      {showResetPasswordModal && selectedUser && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+          <div className="bg-white rounded-lg shadow-2xl w-full max-w-md mx-4 p-6">
+            <h2 className="text-xl font-bold text-gray-900 mb-4">
+              Reset Password - {selectedUser.username}
+            </h2>
+
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-semibold text-gray-900 mb-2">
+                  New Password
+                </label>
+                <input
+                  type="password"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  className="w-full px-3 py-2 text-sm text-gray-900 border border-gray-400 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  placeholder="Enter new password"
+                />
+                {newPassword && (
+                  <div className="mt-2 p-3 bg-gray-50 border border-gray-200 rounded-lg">
+                    <p className="text-xs font-semibold text-gray-700 mb-2">
+                      Password Requirements:
+                    </p>
+                    {(() => {
+                      const validation = validatePassword(newPassword);
+                      return (
+                        <div className="space-y-1 text-xs">
+                          <p
+                            className={
+                              validation.isLongEnough
+                                ? "text-green-600"
+                                : "text-red-600"
+                            }
+                          >
+                            {validation.isLongEnough ? "✓" : "✗"} At least 8
+                            characters
+                          </p>
+                          <p
+                            className={
+                              validation.hasUpperCase
+                                ? "text-green-600"
+                                : "text-red-600"
+                            }
+                          >
+                            {validation.hasUpperCase ? "✓" : "✗"} One uppercase
+                            (A-Z)
+                          </p>
+                          <p
+                            className={
+                              validation.hasLowerCase
+                                ? "text-green-600"
+                                : "text-red-600"
+                            }
+                          >
+                            {validation.hasLowerCase ? "✓" : "✗"} One lowercase
+                            (a-z)
+                          </p>
+                          <p
+                            className={
+                              validation.hasNumber
+                                ? "text-green-600"
+                                : "text-red-600"
+                            }
+                          >
+                            {validation.hasNumber ? "✓" : "✗"} One number (0-9)
+                          </p>
+                          <p
+                            className={
+                              validation.hasSpecialChar
+                                ? "text-green-600"
+                                : "text-red-600"
+                            }
+                          >
+                            {validation.hasSpecialChar ? "✓" : "✗"} One special
+                            character
+                          </p>
+                        </div>
+                      );
+                    })()}
+                  </div>
+                )}
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-gray-900 mb-2">
+                  Confirm New Password
+                </label>
+                <input
+                  type="password"
+                  value={confirmNewPassword}
+                  onChange={(e) => setConfirmNewPassword(e.target.value)}
+                  className={`w-full px-3 py-2 text-sm text-gray-900 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent ${
+                    confirmNewPassword &&
+                    newPassword &&
+                    confirmNewPassword !== newPassword
+                      ? "border-red-500"
+                      : "border-gray-400"
+                  }`}
+                  placeholder="Confirm new password"
+                />
+                {confirmNewPassword &&
+                  newPassword &&
+                  confirmNewPassword !== newPassword && (
+                    <p className="mt-2 text-sm text-red-600">
+                      ⚠️ Passwords do not match
+                    </p>
+                  )}
+              </div>
+            </div>
+
+            <div className="flex gap-3 justify-end mt-6">
+              <Button
+                onClick={() => setShowResetPasswordModal(false)}
+                variant="outline"
+                disabled={loading}
+              >
+                Cancel
+              </Button>
+              <Button
+                onClick={handleResetPassword}
+                disabled={loading}
+                className="bg-purple-600 hover:bg-purple-700 text-white"
+              >
+                {loading ? "Resetting..." : "Reset Password"}
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

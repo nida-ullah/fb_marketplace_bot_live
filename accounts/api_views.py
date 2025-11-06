@@ -681,3 +681,86 @@ def disapprove_user(request, user_id):
             {'error': 'User not found'},
             status=status.HTTP_404_NOT_FOUND
         )
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def update_user_permissions(request, user_id):
+    """Update user permissions (staff/superuser) - only accessible by admin users"""
+    # Check if user is admin (staff or superuser)
+    if not (request.user.is_staff or request.user.is_superuser):
+        return Response(
+            {'error': 'You do not have permission to perform this action'},
+            status=status.HTTP_403_FORBIDDEN
+        )
+
+    try:
+        user = CustomUser.objects.get(id=user_id)
+
+        # Prevent admin from removing their own superuser status
+        if user.id == request.user.id and not request.data.get('is_superuser', True):
+            return Response(
+                {'error': 'You cannot remove your own superuser status'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        # Update permissions
+        user.is_staff = request.data.get('is_staff', user.is_staff)
+        user.is_superuser = request.data.get('is_superuser', user.is_superuser)
+        user.save()
+
+        return Response({
+            'success': True,
+            'message': f'Permissions updated for {user.username}'
+        })
+
+    except CustomUser.DoesNotExist:
+        return Response(
+            {'error': 'User not found'},
+            status=status.HTTP_404_NOT_FOUND
+        )
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def reset_user_password(request, user_id):
+    """Reset user password - only accessible by admin users"""
+    # Check if user is admin (staff or superuser)
+    if not (request.user.is_staff or request.user.is_superuser):
+        return Response(
+            {'error': 'You do not have permission to perform this action'},
+            status=status.HTTP_403_FORBIDDEN
+        )
+
+    try:
+        user = CustomUser.objects.get(id=user_id)
+        new_password = request.data.get('new_password')
+
+        if not new_password:
+            return Response(
+                {'error': 'New password is required'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        # Validate password strength
+        is_valid, error_message = validate_password_strength(new_password)
+        if not is_valid:
+            return Response(
+                {'error': error_message},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        # Set new password
+        user.set_password(new_password)
+        user.save()
+
+        return Response({
+            'success': True,
+            'message': f'Password reset successfully for {user.username}'
+        })
+
+    except CustomUser.DoesNotExist:
+        return Response(
+            {'error': 'User not found'},
+            status=status.HTTP_404_NOT_FOUND
+        )

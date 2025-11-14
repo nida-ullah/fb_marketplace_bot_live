@@ -8817,3 +8817,467 @@ Total Posts: 96
 Job ID: 96580f6f-87d6-4725-996b-b133333af1dd
 ============================================================
 
+
+
+=== Starting posting process at 2025-11-14 09:43:34.268976+00:00 ===
+Project root: C:\Users\Administrator\Documents\development\v2_project\fb_marketplace_bot
+manage.py path: C:\Users\Administrator\Documents\development\v2_project\fb_marketplace_bot\manage.py
+Command: C:\Users\Administrator\Documents\development\v2_project\fb_marketplace_bot\env\Scripts\python.exe C:\Users\Administrator\Documents\development\v2_project\fb_marketplace_bot\manage.py post_to_marketplace --post-ids 570,569,571,567,564,566,565,568,572,573 --job-id 937f6c3e-79cc-4562-8b47-f2302937752e --user-id 1
+Post IDs: 570,569,571,567,564,566,565,568,572,573
+
+C:\Users\Administrator\Documents\development\v2_project\fb_marketplace_bot\env\Lib\site-packages\rest_framework_simplejwt\__init__.py:1: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import DistributionNotFound, get_distribution
+Checking for posts to publish...
+Publishing specific posts: [570, 569, 571, 567, 564, 566, 565, 568, 572, 573]
+Found 10 posts to publish
+
+============================================================
+Starting posting process for 10 account(s)
+============================================================
+
+
+============================================================
+📧 ACCOUNT 1/10: posttomarketplace10@gmail.com
+============================================================
+Posting initiated for account: posttomarketplace10@gmail.com
+Posts to publish: 1
+============================================================
+
+
+Processing post: Queen Size Mattress
+Image path: C:\Users\Administrator\Documents\development\v2_project\fb_marketplace_bot\media\posts\WhatsApp_Image_2025-10-31_at_7_OagMdc2.21.15_AM_2.jpeg
+🤖 Running in HEADLESS mode (background posting)
+🌐 Opening Marketplace listing page...
+📸 Uploading image first...
+📝 Filling Title...
+💰 Filling Price...
+📂 Selecting Category...
+✅ Clicked on Category dropdown
+✅ Selected Category: Furniture (via text)
+🔧 Selecting Condition...
+✅ Clicked on Condition dropdown
+✅ Selected Condition: New (via text)
+🧾 Filling Description...
+📦 Setting Availability: In Stock...
+❌ Could not find Availability dropdown
+📍 Skipping location (using proxy/VPN for region)...
+📤 Looking for Next button...
+✅ Clicked Next button (via text)
+🔍 Looking for Publish button...
+✅ Clicked Publish button (found as 'Publish')
+✅ Posted successfully!
+✓ Successfully posted "Queen Size Mattress" to posttomarketplace10@gmail.com
+
+============================================================
+✅ Posting completed for account: posttomarketplace10@gmail.com
+Account Summary: 1 successful, 0 failed
+============================================================
+
+
+============================================================
+📧 ACCOUNT 2/10: posttomarketplace11@gmail.com
+============================================================
+Posting initiated for account: posttomarketplace11@gmail.com
+Posts to publish: 1
+============================================================
+
+
+Processing post: Queen Size Mattress
+Image path: C:\Users\Administrator\Documents\development\v2_project\fb_marketplace_bot\media\posts\WhatsApp_Image_2025-10-31_at_7_JG7YNYG.21.15_AM_2.jpeg
+🤖 Running in HEADLESS mode (background posting)
+🌐 Opening Marketplace listing page...
+📸 Uploading image first...
+📝 Filling Title...
+💰 Filling Price...
+📂 Selecting Category...
+✅ Clicked on Category dropdown
+✅ Selected Category: Furniture (via text)
+🔧 Selecting Condition...
+✅ Clicked on Condition dropdown
+✅ Selected Condition: New (via text)
+🧾 Filling Description...
+📦 Setting Availability: In Stock...
+❌ Could not find Availability dropdown
+📍 Skipping location (using proxy/VPN for region)...
+📤 Looking for Next button...
+✅ Clicked Next button (via text)
+🔍 Looking for Publish button...
+✅ Clicked Publish button (found as 'Publish')
+✅ Posted successfully!
+✓ Successfully posted "Queen Size Mattress" to posttomarketplace11@gmail.com
+
+============================================================
+✅ Posting completed for account: posttomarketplace11@gmail.com
+Account Summary: 1 successful, 0 failed
+============================================================
+
+
+============================================================
+📧 ACCOUNT 3/10: posttomarketplace12@gmail.com
+============================================================
+Posting initiated for account: posttomarketplace12@gmail.com
+Posts to publish: 1
+============================================================
+
+
+Processing post: Queen Size Mattress
+Image path: C:\Users\Administrator\Documents\development\v2_project\fb_marketplace_bot\media\posts\WhatsApp_Image_2025-10-31_at_7_DlWSJxT.21.15_AM_2.jpeg
+🤖 Running in HEADLESS mode (background posting)
+🌐 Opening Marketplace listing page...
+📸 Uploading image first...
+📝 Filling Title...
+💰 Filling Price...
+📂 Selecting Category...
+✅ Clicked on Category dropdown
+✅ Selected Category: Furniture (via text)
+🔧 Selecting Condition...
+✅ Clicked on Condition dropdown
+✅ Selected Condition: New (via text)
+🧾 Filling Description...
+📦 Setting Availability: In Stock...
+❌ Could not find Availability dropdown
+📍 Skipping location (using proxy/VPN for region)...
+📤 Looking for Next button...
+✅ Clicked Next button (via text)
+🔍 Looking for Publish button...
+✅ Clicked Publish button (found as 'Publish')
+✅ Posted successfully!
+✓ Successfully posted "Queen Size Mattress" to posttomarketplace12@gmail.com
+
+============================================================
+✅ Posting completed for account: posttomarketplace12@gmail.com
+Account Summary: 1 successful, 0 failed
+============================================================
+
+
+============================================================
+📧 ACCOUNT 4/10: posttomarketplace14@gmail.com
+============================================================
+Posting initiated for account: posttomarketplace14@gmail.com
+Posts to publish: 1
+============================================================
+
+
+Processing post: Queen Size Mattress
+Image path: C:\Users\Administrator\Documents\development\v2_project\fb_marketplace_bot\media\posts\WhatsApp_Image_2025-10-31_at_7_6CSXK2Y.21.15_AM_2.jpeg
+🤖 Running in HEADLESS mode (background posting)
+🌐 Opening Marketplace listing page...
+📸 Uploading image first...
+📝 Filling Title...
+💰 Filling Price...
+📂 Selecting Category...
+✅ Clicked on Category dropdown
+✅ Selected Category: Furniture (via text)
+🔧 Selecting Condition...
+✅ Clicked on Condition dropdown
+✅ Selected Condition: New (via text)
+🧾 Filling Description...
+📦 Setting Availability: In Stock...
+❌ Could not find Availability dropdown
+📍 Skipping location (using proxy/VPN for region)...
+📤 Looking for Next button...
+✅ Clicked Next button (via text)
+🔍 Looking for Publish button...
+✅ Clicked Publish button (found as 'Publish')
+✅ Posted successfully!
+✓ Successfully posted "Queen Size Mattress" to posttomarketplace14@gmail.com
+
+============================================================
+✅ Posting completed for account: posttomarketplace14@gmail.com
+Account Summary: 1 successful, 0 failed
+============================================================
+
+
+============================================================
+📧 ACCOUNT 5/10: posttomarketplace15@gmail.com
+============================================================
+Posting initiated for account: posttomarketplace15@gmail.com
+Posts to publish: 1
+============================================================
+
+
+Processing post: Queen Size Mattress
+Image path: C:\Users\Administrator\Documents\development\v2_project\fb_marketplace_bot\media\posts\WhatsApp_Image_2025-10-31_at_7_K9RXAP6.21.15_AM_2.jpeg
+🤖 Running in HEADLESS mode (background posting)
+🌐 Opening Marketplace listing page...
+📸 Uploading image first...
+📝 Filling Title...
+💰 Filling Price...
+📂 Selecting Category...
+✅ Clicked on Category dropdown
+✅ Selected Category: Furniture (via text)
+🔧 Selecting Condition...
+✅ Clicked on Condition dropdown
+✅ Selected Condition: New (via text)
+🧾 Filling Description...
+📦 Setting Availability: In Stock...
+❌ Could not find Availability dropdown
+📍 Skipping location (using proxy/VPN for region)...
+📤 Looking for Next button...
+⚠️ Could not find Next button - form might be single page, looking for Publish directly
+🔍 Looking for Publish button...
+✅ Clicked Publish button (found as 'Publish')
+✅ Posted successfully!
+✓ Successfully posted "Queen Size Mattress" to posttomarketplace15@gmail.com
+
+============================================================
+✅ Posting completed for account: posttomarketplace15@gmail.com
+Account Summary: 1 successful, 0 failed
+============================================================
+
+
+============================================================
+📧 ACCOUNT 6/10: posttomarketplace16@gmail.com
+============================================================
+Posting initiated for account: posttomarketplace16@gmail.com
+Posts to publish: 1
+============================================================
+
+
+Processing post: Queen Size Mattress
+Image path: C:\Users\Administrator\Documents\development\v2_project\fb_marketplace_bot\media\posts\WhatsApp_Image_2025-10-31_at_7_RJB22ib.21.15_AM_2.jpeg
+🤖 Running in HEADLESS mode (background posting)
+🌐 Opening Marketplace listing page...
+📸 Uploading image first...
+📝 Filling Title...
+💰 Filling Price...
+📂 Selecting Category...
+✅ Clicked on Category dropdown
+✅ Selected Category: Furniture (via text)
+🔧 Selecting Condition...
+✅ Clicked on Condition dropdown
+✅ Selected Condition: New (via text)
+🧾 Filling Description...
+📦 Setting Availability: In Stock...
+❌ Could not find Availability dropdown
+📍 Skipping location (using proxy/VPN for region)...
+📤 Looking for Next button...
+✅ Clicked Next button (via text)
+🔍 Looking for Publish button...
+✅ Clicked Publish button (found as 'Publish')
+✅ Posted successfully!
+✓ Successfully posted "Queen Size Mattress" to posttomarketplace16@gmail.com
+
+============================================================
+✅ Posting completed for account: posttomarketplace16@gmail.com
+Account Summary: 1 successful, 0 failed
+============================================================
+
+
+============================================================
+📧 ACCOUNT 7/10: posttomarketplace17@gmail.com
+============================================================
+Posting initiated for account: posttomarketplace17@gmail.com
+Posts to publish: 1
+============================================================
+
+
+Processing post: Queen Size Mattress
+Image path: C:\Users\Administrator\Documents\development\v2_project\fb_marketplace_bot\media\posts\WhatsApp_Image_2025-10-31_at_7_It543DR.21.15_AM_2.jpeg
+🤖 Running in HEADLESS mode (background posting)
+🌐 Opening Marketplace listing page...
+📸 Uploading image first...
+📝 Filling Title...
+💰 Filling Price...
+📂 Selecting Category...
+✅ Clicked on Category dropdown
+✅ Selected Category: Furniture (via text)
+🔧 Selecting Condition...
+✅ Clicked on Condition dropdown
+✅ Selected Condition: New (via text)
+🧾 Filling Description...
+📦 Setting Availability: In Stock...
+❌ Could not find Availability dropdown
+📍 Skipping location (using proxy/VPN for region)...
+📤 Looking for Next button...
+✅ Clicked Next button (via text)
+🔍 Looking for Publish button...
+✅ Clicked Publish button (found as 'Publish')
+✅ Posted successfully!
+✓ Successfully posted "Queen Size Mattress" to posttomarketplace17@gmail.com
+
+============================================================
+✅ Posting completed for account: posttomarketplace17@gmail.com
+Account Summary: 1 successful, 0 failed
+============================================================
+
+
+============================================================
+📧 ACCOUNT 8/10: posttomarketplace13@gmail.com
+============================================================
+Posting initiated for account: posttomarketplace13@gmail.com
+Posts to publish: 1
+============================================================
+
+
+Processing post: Queen Size Mattress
+Image path: C:\Users\Administrator\Documents\development\v2_project\fb_marketplace_bot\media\posts\WhatsApp_Image_2025-10-31_at_7_j9jdex2.21.15_AM_2.jpeg
+🤖 Running in HEADLESS mode (background posting)
+🌐 Opening Marketplace listing page...
+📸 Uploading image first...
+📝 Filling Title...
+💰 Filling Price...
+📂 Selecting Category...
+✅ Clicked on Category dropdown
+✅ Selected Category: Furniture (via text)
+🔧 Selecting Condition...
+✅ Clicked on Condition dropdown
+✅ Selected Condition: New (via text)
+🧾 Filling Description...
+📦 Setting Availability: In Stock...
+❌ Could not find Availability dropdown
+📍 Skipping location (using proxy/VPN for region)...
+📤 Looking for Next button...
+✅ Clicked Next button (via text)
+🔍 Looking for Publish button...
+✅ Clicked Publish button (found as 'Publish')
+✅ Posted successfully!
+✓ Successfully posted "Queen Size Mattress" to posttomarketplace13@gmail.com
+
+============================================================
+✅ Posting completed for account: posttomarketplace13@gmail.com
+Account Summary: 1 successful, 0 failed
+============================================================
+
+
+============================================================
+📧 ACCOUNT 9/10: posttomarketplace19@gmail.com
+============================================================
+Posting initiated for account: posttomarketplace19@gmail.com
+Posts to publish: 1
+============================================================
+
+
+Processing post: Queen Size Mattress
+Image path: C:\Users\Administrator\Documents\development\v2_project\fb_marketplace_bot\media\posts\WhatsApp_Image_2025-10-31_at_7_9oXOzZt.21.15_AM_2.jpeg
+🤖 Running in HEADLESS mode (background posting)
+🌐 Opening Marketplace listing page...
+📸 Uploading image first...
+📝 Filling Title...
+💰 Filling Price...
+📂 Selecting Category...
+✅ Clicked on Category dropdown
+✅ Selected Category: Furniture (via text)
+🔧 Selecting Condition...
+✅ Clicked on Condition dropdown
+✅ Selected Condition: New (via text)
+🧾 Filling Description...
+📦 Setting Availability: In Stock...
+❌ Could not find Availability dropdown
+📍 Skipping location (using proxy/VPN for region)...
+📤 Looking for Next button...
+✅ Clicked Next button (via text)
+🔍 Looking for Publish button...
+✅ Clicked Publish button (found as 'Publish')
+✅ Posted successfully!
+✓ Successfully posted "Queen Size Mattress" to posttomarketplace19@gmail.com
+
+============================================================
+✅ Posting completed for account: posttomarketplace19@gmail.com
+Account Summary: 1 successful, 0 failed
+============================================================
+
+
+============================================================
+📧 ACCOUNT 10/10: posttomarketplace18@gmail.com
+============================================================
+Posting initiated for account: posttomarketplace18@gmail.com
+Posts to publish: 1
+============================================================
+
+
+Processing post: Queen Size Mattress
+Image path: C:\Users\Administrator\Documents\development\v2_project\fb_marketplace_bot\media\posts\WhatsApp_Image_2025-10-31_at_7_SzcZjVU.21.15_AM_2.jpeg
+🤖 Running in HEADLESS mode (background posting)
+🌐 Opening Marketplace listing page...
+📸 Uploading image first...
+📝 Filling Title...
+💰 Filling Price...
+📂 Selecting Category...
+✅ Clicked on Category dropdown
+✅ Selected Category: Furniture (via text)
+🔧 Selecting Condition...
+✅ Clicked on Condition dropdown
+✅ Selected Condition: New (via text)
+🧾 Filling Description...
+📦 Setting Availability: In Stock...
+❌ Could not find Availability dropdown
+📍 Skipping location (using proxy/VPN for region)...
+📤 Looking for Next button...
+✅ Clicked Next button (via text)
+🔍 Looking for Publish button...
+✅ Clicked Publish button (found as 'Publish')
+✅ Posted successfully!
+✓ Successfully posted "Queen Size Mattress" to posttomarketplace18@gmail.com
+
+============================================================
+✅ Posting completed for account: posttomarketplace18@gmail.com
+Account Summary: 1 successful, 0 failed
+============================================================
+
+
+============================================================
+🎉 ALL POSTING COMPLETED!
+============================================================
+Total Accounts Processed: 10
+Total Posts: 10
+✅ Successful: 10
+❌ Failed: 0
+Job ID: 937f6c3e-79cc-4562-8b47-f2302937752e
+============================================================
+
+
+
+=== Starting posting process at 2025-11-14 18:18:31.269784+00:00 ===
+Project root: C:\Users\Administrator\Documents\development\v2_project\fb_marketplace_bot
+manage.py path: C:\Users\Administrator\Documents\development\v2_project\fb_marketplace_bot\manage.py
+Command: C:\Users\Administrator\Documents\development\v2_project\fb_marketplace_bot\env\Scripts\python.exe C:\Users\Administrator\Documents\development\v2_project\fb_marketplace_bot\manage.py post_to_marketplace --post-ids 830 --job-id 0d9b3ebe-fcf8-4e26-9fae-dded264eda10 --user-id 1
+Post IDs: 830
+
+C:\Users\Administrator\Documents\development\v2_project\fb_marketplace_bot\env\Lib\site-packages\rest_framework_simplejwt\__init__.py:1: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import DistributionNotFound, get_distribution
+Checking for posts to publish...
+Publishing specific posts: [830]
+Found 1 posts to publish
+
+============================================================
+Starting posting process for 1 account(s)
+============================================================
+
+
+============================================================
+📧 ACCOUNT 1/1: posttomarketplace6@gmail.com
+============================================================
+Posting initiated for account: posttomarketplace6@gmail.com
+Posts to publish: 1
+============================================================
+
+
+Processing post: queen size mattress
+Image path: C:\Users\Administrator\Documents\development\v2_project\fb_marketplace_bot\media\posts\WhatsApp_Image_2025-10-31_at_7_7KfxmqV.21.17_AM.jpeg
+🤖 Running in HEADLESS mode (background posting)
+🌐 Opening Marketplace listing page...
+📸 Uploading image first...
+❌ Something went wrong while trying to fill the form.
+📷 Screenshot saved as error_screenshot.png
+✗ Failed to post "queen size mattress" to posttomarketplace6@gmail.com: Locator.set_input_files: Timeout 30000ms exceeded.
+Call log:
+  - waiting for locator("input[type='file'][accept*='image']")
+
+
+============================================================
+✅ Posting completed for account: posttomarketplace6@gmail.com
+Account Summary: 0 successful, 1 failed
+============================================================
+
+
+============================================================
+🎉 ALL POSTING COMPLETED!
+============================================================
+Total Accounts Processed: 1
+Total Posts: 1
+✅ Successful: 0
+❌ Failed: 1
+Job ID: 0d9b3ebe-fcf8-4e26-9fae-dded264eda10
+============================================================
+

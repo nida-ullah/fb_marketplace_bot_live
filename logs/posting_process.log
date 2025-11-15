@@ -9702,3 +9702,204 @@ Total Posts: 1
 Job ID: 4489e8b5-0b95-4db1-9562-1c4c520b3070
 ============================================================
 
+
+
+=== Starting posting process at 2025-11-15 18:04:20.885254+00:00 ===
+Project root: C:\Users\NidaUllah\OneDrive - Higher Education Commission\Documents\Development\fast_listing_bot\fb_marketplace_bot
+manage.py path: C:\Users\NidaUllah\OneDrive - Higher Education Commission\Documents\Development\fast_listing_bot\fb_marketplace_bot\manage.py
+Command: C:\Users\NidaUllah\OneDrive - Higher Education Commission\Documents\Development\fast_listing_bot\fb_marketplace_bot\env\Scripts\python.exe C:\Users\NidaUllah\OneDrive - Higher Education Commission\Documents\Development\fast_listing_bot\fb_marketplace_bot\manage.py post_to_marketplace --post-ids 834 --job-id f9bbad1c-027d-4a19-916c-4a868ec154bd --user-id 1
+Post IDs: 834
+
+C:\Users\NidaUllah\OneDrive - Higher Education Commission\Documents\Development\fast_listing_bot\fb_marketplace_bot\env\Lib\site-packages\rest_framework_simplejwt\__init__.py:1: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import DistributionNotFound, get_distribution
+Checking for posts to publish...
+Publishing specific posts: [834]
+Found 1 posts to publish
+
+============================================================
+Starting posting process for 1 account(s)
+============================================================
+
+
+============================================================
+📧 ACCOUNT 1/1: sanasanaori@gmail.com
+============================================================
+Posting initiated for account: sanasanaori@gmail.com
+Posts to publish: 1
+============================================================
+
+
+Processing post: test
+Image path: C:\Users\NidaUllah\OneDrive - Higher Education Commission\Documents\Development\fast_listing_bot\fb_marketplace_bot\media\posts\Gemini_Generated_Image_3zh1qq3zh1qq3zh1.png
+🤖 Running in HEADLESS mode (background posting)
+🌐 Opening Marketplace listing page...
+📸 Uploading image first...
+📝 Filling Title...
+💰 Filling Price...
+📂 Selecting Category...
+✅ Clicked on Category dropdown
+✅ Selected Category: Furniture (via text)
+🔧 Selecting Condition...
+✅ Clicked on Condition dropdown
+✅ Selected Condition: New (via text)
+🧾 Filling Description...
+📦 Setting Availability: In Stock...
+❌ Could not find Availability dropdown
+📍 Skipping location (using proxy/VPN for region)...
+📤 Looking for Next button...
+✅ Clicked Next button (via text)
+🔍 Looking for Publish button...
+✅ Clicked Publish button (found as 'Publish')
+✅ Posted successfully!
+✓ Successfully posted "test" to sanasanaori@gmail.com
+
+============================================================
+✅ Posting completed for account: sanasanaori@gmail.com
+Account Summary: 1 successful, 0 failed
+============================================================
+
+
+============================================================
+🎉 ALL POSTING COMPLETED!
+============================================================
+Total Accounts Processed: 1
+Total Posts: 1
+✅ Successful: 1
+❌ Failed: 0
+Job ID: f9bbad1c-027d-4a19-916c-4a868ec154bd
+============================================================
+
+
+
+=== Starting posting process at 2025-11-15 18:09:53.195202+00:00 ===
+Project root: C:\Users\NidaUllah\OneDrive - Higher Education Commission\Documents\Development\fast_listing_bot\fb_marketplace_bot
+manage.py path: C:\Users\NidaUllah\OneDrive - Higher Education Commission\Documents\Development\fast_listing_bot\fb_marketplace_bot\manage.py
+Command: C:\Users\NidaUllah\OneDrive - Higher Education Commission\Documents\Development\fast_listing_bot\fb_marketplace_bot\env\Scripts\python.exe C:\Users\NidaUllah\OneDrive - Higher Education Commission\Documents\Development\fast_listing_bot\fb_marketplace_bot\manage.py post_to_marketplace --post-ids 835 --job-id 4df82069-241d-43bb-92dc-210ff5494468 --user-id 1
+Post IDs: 835
+
+C:\Users\NidaUllah\OneDrive - Higher Education Commission\Documents\Development\fast_listing_bot\fb_marketplace_bot\env\Lib\site-packages\rest_framework_simplejwt\__init__.py:1: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import DistributionNotFound, get_distribution
+Checking for posts to publish...
+Publishing specific posts: [835]
+Found 1 posts to publish
+
+============================================================
+Starting posting process for 1 account(s)
+============================================================
+
+
+============================================================
+📧 ACCOUNT 1/1: faceboookmarketplace6@gmail.com
+============================================================
+Posting initiated for account: faceboookmarketplace6@gmail.com
+Posts to publish: 1
+============================================================
+
+
+Processing post: test
+Image path: C:\Users\NidaUllah\OneDrive - Higher Education Commission\Documents\Development\fast_listing_bot\fb_marketplace_bot\media\posts\Gemini_Generated_Image_3zh1qq3zh1qq3zh1_8kDQEAN.png
+🤖 Running in HEADLESS mode (background posting)
+🌐 Opening Marketplace listing page...
+📸 Uploading image first...
+📝 Filling Title...
+💰 Filling Price...
+📂 Selecting Category...
+✅ Clicked on Category dropdown
+✅ Selected Category: Furniture (via text)
+🔧 Selecting Condition...
+✅ Clicked on Condition dropdown
+✅ Selected Condition: New (via text)
+🧾 Filling Description...
+📦 Setting Availability: In Stock...
+❌ Could not find Availability dropdown
+📍 Skipping location (using proxy/VPN for region)...
+📤 Looking for Next button...
+✅ Clicked Next button (via text)
+🔍 Looking for Publish button...
+✅ Clicked Publish button (found as 'Publish')
+✅ Posted successfully!
+✓ Successfully posted "test" to faceboookmarketplace6@gmail.com
+
+============================================================
+✅ Posting completed for account: faceboookmarketplace6@gmail.com
+Account Summary: 1 successful, 0 failed
+============================================================
+
+
+============================================================
+🎉 ALL POSTING COMPLETED!
+============================================================
+Total Accounts Processed: 1
+Total Posts: 1
+✅ Successful: 1
+❌ Failed: 0
+Job ID: 4df82069-241d-43bb-92dc-210ff5494468
+============================================================
+
+
+
+=== Starting posting process at 2025-11-15 18:13:36.815758+00:00 ===
+Project root: C:\Users\NidaUllah\OneDrive - Higher Education Commission\Documents\Development\fast_listing_bot\fb_marketplace_bot
+manage.py path: C:\Users\NidaUllah\OneDrive - Higher Education Commission\Documents\Development\fast_listing_bot\fb_marketplace_bot\manage.py
+Command: C:\Users\NidaUllah\OneDrive - Higher Education Commission\Documents\Development\fast_listing_bot\fb_marketplace_bot\env\Scripts\python.exe C:\Users\NidaUllah\OneDrive - Higher Education Commission\Documents\Development\fast_listing_bot\fb_marketplace_bot\manage.py post_to_marketplace --post-ids 836 --job-id 752a355b-1dbe-4374-abcf-12b47fe9fc90 --user-id 1
+Post IDs: 836
+
+C:\Users\NidaUllah\OneDrive - Higher Education Commission\Documents\Development\fast_listing_bot\fb_marketplace_bot\env\Lib\site-packages\rest_framework_simplejwt\__init__.py:1: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import DistributionNotFound, get_distribution
+Checking for posts to publish...
+Publishing specific posts: [836]
+Found 1 posts to publish
+
+============================================================
+Starting posting process for 1 account(s)
+============================================================
+
+
+============================================================
+📧 ACCOUNT 1/1: faceboookmarketplace3@gmail.com
+============================================================
+Posting initiated for account: faceboookmarketplace3@gmail.com
+Posts to publish: 1
+============================================================
+
+
+Processing post: test
+Image path: C:\Users\NidaUllah\OneDrive - Higher Education Commission\Documents\Development\fast_listing_bot\fb_marketplace_bot\media\posts\Blue_Red_Gradient_Student_ID_Card_9undgTb.png
+🤖 Running in HEADLESS mode (background posting)
+🌐 Opening Marketplace listing page...
+📸 Uploading image first...
+📝 Filling Title...
+💰 Filling Price...
+📂 Selecting Category...
+✅ Clicked on Category dropdown
+✅ Selected Category: Furniture (via text)
+🔧 Selecting Condition...
+✅ Clicked on Condition dropdown
+✅ Selected Condition: New (via text)
+🧾 Filling Description...
+📦 Setting Availability: In Stock...
+❌ Could not find Availability dropdown
+📍 Skipping location (using proxy/VPN for region)...
+📤 Looking for Next button...
+✅ Clicked Next button (via text)
+🔍 Looking for Publish button...
+✅ Clicked Publish button (found as 'Publish')
+✅ Posted successfully!
+✓ Successfully posted "test" to faceboookmarketplace3@gmail.com
+
+============================================================
+✅ Posting completed for account: faceboookmarketplace3@gmail.com
+Account Summary: 1 successful, 0 failed
+============================================================
+
+
+============================================================
+🎉 ALL POSTING COMPLETED!
+============================================================
+Total Accounts Processed: 1
+Total Posts: 1
+✅ Successful: 1
+❌ Failed: 0
+Job ID: 752a355b-1dbe-4374-abcf-12b47fe9fc90
+============================================================
+

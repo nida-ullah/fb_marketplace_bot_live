@@ -1,23 +1,40 @@
 @echo off
-echo ================================================
-echo   Facebook Marketplace Bot - Backend Setup
-echo ================================================
-echo.
+echo Starting Django backend...
 
-echo [1/3] Installing required packages...
-pip install djangorestframework djangorestframework-simplejwt django-cors-headers
+REM Activate virtual environment
+call C:\Users\Administrator\Documents\fb_marketplace_bot\env\Scripts\activate.bat
 
-echo.
-echo [2/3] Running migrations...
-python manage.py migrate
+REM Run Waitress server
+start "Waitress Server" cmd /k "waitress-serve --listen=127.0.0.1:8000 bot_core.wsgi:application"
 
-echo.
-echo [3/3] Starting Django server...
-echo.
-echo Backend will run on: http://localhost:8000
-echo API endpoints available at: http://localhost:8000/api/
-echo.
-echo Press Ctrl+C to stop the server
-echo.
+REM Run Cloudflare Tunnel (change your tunnel name)
+start "Cloudflare Tunnel" cmd /k "cloudflared tunnel run django-backend"
 
-python manage.py runserver
+echo Backend is now running!
+pause
+
+
+
+@REM @echo off
+@REM echo ================================================
+@REM echo   Facebook Marketplace Bot - Backend Setup
+@REM echo ================================================
+@REM echo.
+
+@REM echo [1/3] Installing required packages...
+@REM pip install djangorestframework djangorestframework-simplejwt django-cors-headers
+
+@REM echo.
+@REM echo [2/3] Running migrations...
+@REM python manage.py migrate
+
+@REM echo.
+@REM echo [3/3] Starting Django server...
+@REM echo.
+@REM echo Backend will run on: http://localhost:8000
+@REM echo API endpoints available at: http://localhost:8000/api/
+@REM echo.
+@REM echo Press Ctrl+C to stop the server
+@REM echo.
+
+@REM python manage.py runserver

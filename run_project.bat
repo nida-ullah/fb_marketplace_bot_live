@@ -1,17 +1,19 @@
-@echo off
-echo Starting Django backend...
+@REM @echo off
+@REM echo Starting Django backend...
 
-REM Activate virtual environment
+@REM REM Activate virtual environment
 call C:\Users\Administrator\Documents\fb_marketplace_bot\env\Scripts\activate.bat
 
 REM Run Waitress server
-start "Waitress Server" cmd /k "waitress-serve --listen=127.0.0.1:8000 bot_core.wsgi:application"
+@REM start "Waitress Server" cmd /k "waitress-serve --listen=127.0.0.1:8000 bot_core.wsgi:application"
+start "Waitress Server" cmd /k "waitress-serve --listen=0.0.0.0:9000 --threads=32 --backlog=4096 --channel-timeout=120 bot_core.wsgi:application
+"
 
 REM Run Cloudflare Tunnel (change your tunnel name)
 start "Cloudflare Tunnel" cmd /k "cloudflared tunnel run django-backend"
 
-echo Backend is now running!
-pause
+@REM echo Backend is now running!
+@REM pause
 
 
 
